@@ -8,11 +8,13 @@
 # Python 2/3 compatibility imports
 from __future__ import print_function
 
+
 import sys
 import copy
 import rospy
 import moveit_commander
 import moveit_msgs.msg
+import time
 import geometry_msgs.msg
 from math import pi, tau, dist, fabs, cos, radians
 
@@ -53,3 +55,30 @@ def all_close(goal, actual, tolerance):
         return d <= tolerance and cos_phi_half >= cos(tolerance / 2.0)
 
     return True
+
+class Gripper():
+    def __init__(self):
+        self.gripper_pub = rospy.Publisher('gripper_command', String, queue_size=10)
+        self.state = None
+        self.sleep_time = 5.0
+        # self.command = "close"
+
+    def actuate(self, command):
+        log_msg = "Gripper state : " + command
+        rospy.loginfo(log_msg)
+        self.state = command
+        self.gripper_pub.publish(command)
+        time.sleep(self.sleep_time) 
+        return self.state
+
+    def close(self):
+        self.actuate("close")
+
+    def semi_close(self):
+        self.actuate("semi_close")
+
+    def semi_open(self):
+        self.actuate("semi_open")
+
+    def open(self):
+        self.actuate("open")
