@@ -44,8 +44,9 @@ imu_place.position.z = 0.11938230955500673
 imu_place.orientation.x = -0.7111337083932515
 imu_place.orientation.y = 0.7029704048803254
 imu_place.orientation.z = 0.010846756960616119
-imu_place.orientation.w = 0.0019510286237520822
+imu_place.orientation.w = 0.001951028623752082
 
+## left side board where we have to stick the IMU module 
 left_board = geometry_msgs.msg.Pose()
 left_board.position.x = 0.29543432137091497
 left_board.position.y = 0.17612193827029538
@@ -54,4 +55,39 @@ left_board.orientation.x = -0.19133129832659512
 left_board.orientation.y = 0.6807265584059808
 left_board.orientation.z = 0.19131910390326864
 left_board.orientation.w = 0.6807354019316599
+
+## top-left corner of center board
+
+# position: 
+#   x: 0.2814968119003112
+#   y: 0.11257212723531237
+#   z: 0.4887584644697226
+# orientation: 
+#   x: -7.721473549281385e-05
+#   y: 0.7057183659811934
+#   z: 0.0020666048089374714
+#   w: 0.7084894572957896
+
+
+## top-right corner of center board
+# position: 
+#   x: 0.30076148916894696
+#   y: -0.09298244983999349
+#   z: 0.4882709110543487
+# orientation: 
+#   x: -0.00012996906285835558
+#   y: 0.7056967322937785
+#   z: 0.0021181157667599115
+#   w: 0.7085108458757173
+
+## middle-right corner of center board
+# position: 
+#   x: 0.3014967745169874
+#   y: -0.0924580888770981
+#   z: 0.3102919355451365
+# orientation: 
+#   x: -0.0001536989547791067
+#   y: 0.7057113227207551
+#   z: 0.00211083518644061
+#   w: 0.7084963300788292
 

@@ -57,8 +57,8 @@ def main():
         # input("============ Press `Enter` to execute a saved path ...")
         # arm.execute_plan(cartesian_plan)
 
-        input("============ Press `Enter` to execute a movement using a pose goal ...")
-        arm.go_to_pose_goal(imu_place)        
+        # input("============ Press `Enter` to execute a movement using a pose goal ...")
+        # arm.go_to_pose_goal(imu_place)        
         
 
         # input("============ Press `Enter` to go to home pose ...")
