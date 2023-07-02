@@ -95,6 +95,16 @@ left_board.orientation.y = 0.6276256803624016
 left_board.orientation.z = 0.15411417692619064
 left_board.orientation.w = 0.7544661231732779
 
+left_board_joint = []
+left_board_joint.append(radians(23))
+left_board_joint.append(radians(-125))
+left_board_joint.append(radians(106))
+left_board_joint.append(radians(7))
+left_board_joint.append(radians(90))
+left_board_joint.append(radians(-90))
+
+
+
 
 ## top-left corner of center board
 top_left_center = geometry_msgs.msg.Pose()
@@ -113,38 +123,3 @@ top_left_center_joint_goal[2] = radians(39)
 top_left_center_joint_goal[3] = radians(49)
 top_left_center_joint_goal[4] = radians(90)
 top_left_center_joint_goal[5] = radians(-90)
-
-
-
-## top-right corner of center board
-# position: 
-#   x: 0.30076148916894696
-#   y: -0.09298244983999349
-#   z: 0.4882709110543487
-# orientation: 
-#   x: -0.00012996906285835558
-#   y: 0.7056967322937785
-#   z: 0.0021181157667599115
-#   w: 0.7085108458757173
-
-## middle-right corner of center board
-# position: 
-#   x: 0.3014967745169874
-#   y: -0.0924580888770981
-#   z: 0.3102919355451365
-# orientation: 
-#   x: -0.0001536989547791067
-#   y: 0.7057113227207551
-#   z: 0.00211083518644061
-#   w: 0.7084963300788292
-
-
-# # imu
-# imu_area = geometry_msgs.msg.Pose()
-# imu_area.position.x = 0.13533445186563775
-# imu_area.position.y = 0.24606431684893684
-# imu_area.position.z = 0.11019034193242203
-# imu_area.orientation.x = -0.6778411178011019
-# imu_area.orientation.y = 0.7301153884438897
-# imu_area.orientation.z = 0.013730398011894558
-# imu_area.orientation.w = 0.08506639339906107

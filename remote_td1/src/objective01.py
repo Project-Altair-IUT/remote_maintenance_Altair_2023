@@ -15,7 +15,7 @@ from altair_msgs.msg import AltairAruco
 # from erc_aruco_msg.srv import ErcAruco, ErcArucoRequest, ErcArucoResponse
 
 from positions import home_joint_goal, top_left_center_joint_goal, \
-                    yaw_left, imu_area, left_board, \
+                    yaw_left, imu_area, left_board_joint, \
                     yaw_right, inspection_box_area, cover_placement_area
 
 from moveitInterface import MoveGroupInterface
@@ -39,7 +39,7 @@ def scan_left():
     arm.go_to_joint_state(yaw_left)
 
     #look at left panel
-    arm.go_to_pose_goal(left_board)
+    arm.go_to_joint_state(left_board_joint)
 
     #go back to previous state
     arm.go_to_joint_state(yaw_left)
