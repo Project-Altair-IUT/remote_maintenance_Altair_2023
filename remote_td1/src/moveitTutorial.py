@@ -22,7 +22,7 @@ from moveit_commander.conversions import pose_to_list
 ## END_SUB_TUTORIAL
 
 #import positions from positions file
-from positions import home_joint_goal, left_board, imu_area
+from positions import home_joint_goal, left_board, imu_area, yaw_left, yaw_right
 from moveitInterface import MoveGroupInterface
 
 
@@ -41,13 +41,13 @@ def main():
         arm = MoveGroupInterface()
         arm.show_current_pose()
 
-        input("============ Press `Enter` to go to home pose ...")
-        arm.go_home()
+        # input("============ Press `Enter` to go to home pose ...")
+        # arm.go_home()
 
-        # input(
-        #     "============ Press `Enter` to execute a movement using a joint state goal ..."
-        # )
-        # tutorial.go_to_joint_state()
+        input(
+            "============ Press `Enter` to execute a movement using a joint state goal ..."
+        )
+        arm.go_to_joint_state(yaw_right)
 
         # input("============ Press `Enter` to plan and display a Cartesian path ...")
         # cartesian_plan, fraction = arm.plan_cartesian_path()
@@ -85,4 +85,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    gripper_pub = rospy.Publisher('gripper_command', String, queue_size=10)
+    gripper_pub.publish("close")
