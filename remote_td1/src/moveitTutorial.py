@@ -88,3 +88,5 @@ if __name__ == "__main__":
     # main()
     gripper_pub = rospy.Publisher('gripper_command', String, queue_size=10)
     gripper_pub.publish("close")
+
+    # arm.go_to_joint_state(yaw_left)

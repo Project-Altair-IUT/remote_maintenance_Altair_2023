@@ -136,17 +136,5 @@ if __name__ == '__main__':
     arm.go_home()
 
     main()
-    # t = 10
-    # while t:
-    #     scan_left()
-
-    #     scan_right()
-
-    #     time.sleep(3)
-
-    #     t -= 1
-
-
-    # arm.go_to_joint_state(yaw_left)
 
     
