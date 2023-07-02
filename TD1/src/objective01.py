@@ -92,11 +92,10 @@ def scan_centre():
 def main():
     arm.go_home()
     gripper.open()
-    time.sleep(6)
+    time.sleep(6)   # to make sure gripper opens before next moves
     scan_left()
     scan_right()
     scan_centre()
-    gripper.close()    
     
 
     # Get the aruco positions
