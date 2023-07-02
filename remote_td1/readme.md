@@ -7,3 +7,8 @@ rosrun remote_td1 moveitTutorial.py
 ```
 rosrun erc_arcuo_checker erc_aruco_checker.py _sim:=True _tolerance:=0.005
 ```
+
+## To get the submodules:
+```
+git submodule update --init
+```
