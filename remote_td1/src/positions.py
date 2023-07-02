@@ -57,6 +57,23 @@ left_board.orientation.z = 0.19131910390326864
 left_board.orientation.w = 0.6807354019316599
 
 ## top-left corner of center board
+top_left_center = geometry_msgs.msg.Pose()
+top_left_center.position.x = 0.2814968119003112
+top_left_center.position.y = 0.11257212723531237
+top_left_center.position.z = 0.4887584644697226
+top_left_center.orientation.x = -7.721473549281385e-05
+top_left_center.orientation.y = 0.7057183659811934
+top_left_center.orientation.z = 0.0020666048089374714
+top_left_center.orientation.w = 0.7084894572957896
+
+top_left_center_joint_goal = [0 for _ in range(6)]
+top_left_center_joint_goal[0] = 0
+top_left_center_joint_goal[1] = radians(-88)
+top_left_center_joint_goal[2] = radians(39)
+top_left_center_joint_goal[3] = radians(49)
+top_left_center_joint_goal[4] = radians(90)
+top_left_center_joint_goal[5] = radians(-90)
+
 
 # position: 
 #   x: 0.2814968119003112
@@ -91,3 +108,42 @@ left_board.orientation.w = 0.6807354019316599
 #   z: 0.00211083518644061
 #   w: 0.7084963300788292
 
+# lid starting position
+lid = geometry_msgs.msg.Pose()
+lid.position.x = 0.2358072900697823
+lid.position.y = -0.23415303785561903
+lid.position.z = 0.2121063553827074
+lid.orientation.x = 0.11669231495027149
+lid.orientation.y = 0.6965663543474722
+lid.orientation.z = -0.11427244757320609
+lid.orientation.w = 0.6986558704743325
+
+#position to keep the lid
+lid_placement = geometry_msgs.msg.Pose()
+lid_placement.position.x = 0.2869116211452445
+lid_placement.position.y = -0.2031893729223361
+lid_placement.position.z = 0.2679293893266063
+lid_placement.orientation.x = 0.05766940464294197
+lid_placement.orientation.y = 0.9188643663753105
+lid_placement.orientation.z = -0.14686315274294895
+lid_placement.orientation.w = 0.36165415847219146
+
+# cover area
+cover_area = geometry_msgs.msg.Pose()
+cover_area.position.x = 0.14276348174207631
+cover_area.position.y = -0.21525259000332297
+cover_area.position.z = 0.3219434340662344
+cover_area.orientation.x = -0.030230889882158038
+cover_area.orientation.y = 0.998828681070058
+cover_area.orientation.z = 0.011901195725936231
+cover_area.orientation.w = 0.035856947849393805
+
+# imu
+imu_area = geometry_msgs.msg.Pose()
+imu_area.position.x = 0.13533445186563775
+imu_area.position.y = 0.24606431684893684
+imu_area.position.z = 0.11019034193242203
+imu_area.orientation.x = -0.029490547055271397
+imu_area.orientation.y = 0.9958441105508894
+imu_area.orientation.z = 0.013730398011894558
+imu_area.orientation.w = 0.08506639339906107

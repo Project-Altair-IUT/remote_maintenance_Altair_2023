@@ -1,0 +1,6 @@
+[submodule "erc_aruco_checker"]
+	path = erc_aruco_checker
+	url = https://github.com/filesmuggler/erc_aruco_checker.git
+[submodule "erc_aruco_msg"]
+	path = erc_aruco_msg
+	url = https://github.com/filesmuggler/erc_aruco_msg.git

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 ## To use the Python MoveIt interfaces, we will import the `moveit_commander`_ namespace.
 ## This namespace provides us with a `MoveGroupCommander`_ class, a `PlanningSceneInterface`_ class,

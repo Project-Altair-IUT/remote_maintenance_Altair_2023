@@ -1,30 +1,8 @@
-#!/usr/bin/env python
-
-## To use the Python MoveIt interfaces, we will import the `moveit_commander`_ namespace.
-## This namespace provides us with a `MoveGroupCommander`_ class, a `PlanningSceneInterface`_ class,
-## and a `RobotCommander`_ class. More on these below. We also import `rospy`_ and some messages that we will use:
-##
-
-# Python 2/3 compatibility imports
-from __future__ import print_function
-
-
-import sys
-import copy
 import rospy
-import moveit_commander
-import moveit_msgs.msg
 import time
-import geometry_msgs.msg
-from math import pi, tau, dist, fabs, cos, radians
-
-from std_msgs.msg import String
+import geometry_msgs
+from math import pi, tau, dist, fabs, cos
 from moveit_commander.conversions import pose_to_list
-
-## END_SUB_TUTORIAL
-
-#import positions from positions file
-from positions import home_joint_goal, left_board, imu_place
 
 
 def all_close(goal, actual, tolerance):
@@ -61,14 +39,14 @@ class Gripper():
         self.gripper_pub = rospy.Publisher('gripper_command', String, queue_size=10)
         self.state = None
         self.sleep_time = 5.0
-        # self.command = "close"
+        self.command = "open"
 
     def actuate(self, command):
         log_msg = "Gripper state : " + command
         rospy.loginfo(log_msg)
         self.state = command
         self.gripper_pub.publish(command)
-        time.sleep(self.sleep_time) 
+        time.sleep(self.sleep_time)
         return self.state
 
     def close(self):
