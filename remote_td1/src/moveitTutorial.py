@@ -22,7 +22,7 @@ from moveit_commander.conversions import pose_to_list
 ## END_SUB_TUTORIAL
 
 #import positions from positions file
-from positions import home_joint_goal, left_board, imu_place
+from positions import home_joint_goal, left_board, imu_area
 from moveitInterface import MoveGroupInterface
 
 
@@ -37,9 +37,7 @@ def main():
         print("----------------------------------------------------------")
         print("Press Ctrl-D to exit at any time")
         print("")
-        input(
-            "============ Press `Enter` to begin the tutorial by setting up the moveit_commander ..."
-        )
+        # input("============ Press `Enter` to begin the tutorial by setting up the moveit_commander ...")
         arm = MoveGroupInterface()
         arm.show_current_pose()
 
@@ -58,7 +56,11 @@ def main():
         # arm.execute_plan(cartesian_plan)
 
         # input("============ Press `Enter` to execute a movement using a pose goal ...")
-        # arm.go_to_pose_goal(imu_place)        
+        # arm.go_to_pose_goal(imu_place)     
+        
+        
+        # input("============ Press `Enter` to execute a movement using a pose goal ...")
+        # arm.go_to_pose_goal(imu_area)   
         
 
         # input("============ Press `Enter` to go to home pose ...")
@@ -70,9 +72,9 @@ def main():
         # cartesian_plan, fraction = tutorial.plan_cartesian_path(scale=-1)
         # tutorial.execute_plan(cartesian_plan)
 
-        while True:
-            input("============ Press `Enter` to see current pose ...")
-            arm.show_current_pose()
+        # while True:
+        #     input("============ Press `Enter` to see current pose ...")
+        #     arm.show_current_pose()
             
 
         print("============ Python tutorial demo complete!")

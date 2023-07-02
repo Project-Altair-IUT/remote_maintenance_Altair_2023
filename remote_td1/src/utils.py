@@ -3,6 +3,7 @@ import time
 import geometry_msgs
 from math import pi, tau, dist, fabs, cos
 from moveit_commander.conversions import pose_to_list
+from std_msgs.msg import String
 
 
 def all_close(goal, actual, tolerance):

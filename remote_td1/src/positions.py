@@ -36,25 +36,35 @@ home_joint_goal.append(radians(20))
 home_joint_goal.append(radians(90))
 home_joint_goal.append(radians(-90))
 
+## to rotate left
+yaw_left = []
+yaw_left.append(radians(35))
+yaw_left.append(radians(-120))
+yaw_left.append(radians(100))
+yaw_left.append(radians(20))
+yaw_left.append(radians(90))
+yaw_left.append(radians(-90))
+
 ## the place on the left where IMU module is kept
-imu_place = geometry_msgs.msg.Pose()
-imu_place.position.x = 0.19132582738943238
-imu_place.position.y = 0.2356817278349128
-imu_place.position.z = 0.11938230955500673
-imu_place.orientation.x = -0.7111337083932515
-imu_place.orientation.y = 0.7029704048803254
-imu_place.orientation.z = 0.010846756960616119
-imu_place.orientation.w = 0.001951028623752082
+imu_area = geometry_msgs.msg.Pose()
+imu_area.position.x = 0.19132582738943238
+imu_area.position.y = 0.2356817278349128
+imu_area.position.z = 0.11938230955500673
+imu_area.orientation.x = -0.7111337083932515
+imu_area.orientation.y = 0.7029704048803254
+imu_area.orientation.z = 0.010846756960616119
+imu_area.orientation.w = 0.001951028623752082
 
 ## left side board where we have to stick the IMU module 
 left_board = geometry_msgs.msg.Pose()
-left_board.position.x = 0.29543432137091497
-left_board.position.y = 0.17612193827029538
-left_board.position.z = 0.4750929197533251
-left_board.orientation.x = -0.19133129832659512
-left_board.orientation.y = 0.6807265584059808
-left_board.orientation.z = 0.19131910390326864
-left_board.orientation.w = 0.6807354019316599
+left_board.position.x = 0.2033890665790144
+left_board.position.y = 0.24456285077225193
+left_board.position.z = 0.3875504187763552
+left_board.orientation.x = -0.11452377396802657
+left_board.orientation.y = 0.6276256803624016
+left_board.orientation.z = 0.15411417692619064
+left_board.orientation.w = 0.7544661231732779
+
 
 ## top-left corner of center board
 top_left_center = geometry_msgs.msg.Pose()
@@ -138,12 +148,12 @@ cover_area.orientation.y = 0.998828681070058
 cover_area.orientation.z = 0.011901195725936231
 cover_area.orientation.w = 0.035856947849393805
 
-# imu
-imu_area = geometry_msgs.msg.Pose()
-imu_area.position.x = 0.13533445186563775
-imu_area.position.y = 0.24606431684893684
-imu_area.position.z = 0.11019034193242203
-imu_area.orientation.x = -0.029490547055271397
-imu_area.orientation.y = 0.9958441105508894
-imu_area.orientation.z = 0.013730398011894558
-imu_area.orientation.w = 0.08506639339906107
+# # imu
+# imu_area = geometry_msgs.msg.Pose()
+# imu_area.position.x = 0.13533445186563775
+# imu_area.position.y = 0.24606431684893684
+# imu_area.position.z = 0.11019034193242203
+# imu_area.orientation.x = -0.6778411178011019
+# imu_area.orientation.y = 0.7301153884438897
+# imu_area.orientation.z = 0.013730398011894558
+# imu_area.orientation.w = 0.08506639339906107

@@ -11,6 +11,7 @@ from __future__ import print_function
 import sys
 import copy
 import rospy
+import time
 import moveit_commander
 import moveit_msgs.msg
 import geometry_msgs.msg
@@ -22,7 +23,7 @@ from moveit_commander.conversions import pose_to_list
 ## END_SUB_TUTORIAL
 
 #import positions from positions file
-from positions import home_joint_goal, left_board, imu_place
+from positions import home_joint_goal, yaw_left, left_board, imu_area
 from utils import all_close
 
 
@@ -109,6 +110,7 @@ class MoveGroupInterface(object):
         # Calling ``stop()`` ensures that there is no residual movement
         move_group.stop()
 
+        time.sleep(1)
         ## END_SUB_TUTORIAL
 
         # For testing:
@@ -134,6 +136,9 @@ class MoveGroupInterface(object):
         # It is always good to clear your targets after planning with poses.
         move_group.clear_pose_targets()
 
+        time.sleep(1)
+
+
         ## END_SUB_TUTORIAL
         # For testing:
         # Note that since this section of code will not be included in the tutorials
@@ -143,8 +148,9 @@ class MoveGroupInterface(object):
 
     def go_home(self):
         self.go_to_joint_state(home_joint_goal)
+        
 
-    def plan_cartesian_path(self, scale=1):
+    def plan_cartesian_path(self, scale=1, delta = 0.1):
         # Copy class variables to local variables to make the web tutorials more clear.
         # In practice, you should use the class variables directly unless you have a good
         # reason not to.
@@ -158,17 +164,19 @@ class MoveGroupInterface(object):
         ## for the end-effector to go through. If executing  interactively in a
         ## Python shell, set scale = 1.0.
         ##
+        dx, dy, dz = delta
+
         waypoints = []
 
         wpose = move_group.get_current_pose().pose
-        wpose.position.z -= scale * 0.1  # First move up (z)
-        wpose.position.y += scale * 0.2  # and sideways (y)
+        wpose.position.z -= scale * dz  # First move up (z)
+        wpose.position.y += scale * dy  # and sideways (y)
         waypoints.append(copy.deepcopy(wpose))
 
-        wpose.position.x += scale * 0.1  # Second move forward/backwards in (x)
+        wpose.position.x += scale * dx  # Second move forward/backwards in (x)
         waypoints.append(copy.deepcopy(wpose))
 
-        wpose.position.y -= scale * 0.1  # Third move sideways (y)
+        wpose.position.y -= scale * dy  # Third move sideways (y)
         waypoints.append(copy.deepcopy(wpose))
 
         # We want the Cartesian path to be interpolated at a resolution of 1 cm
@@ -227,6 +235,8 @@ class MoveGroupInterface(object):
         ## Use execute if you would like the robot to follow
         ## the plan that has already been computed:
         move_group.execute(plan, wait=True)
+
+        time.sleep(1)
 
         ## **Note:** The robot's current joint state must be within some tolerance of the
         ## first waypoint in the `RobotTrajectory`_ or ``execute()`` will fail
