@@ -243,9 +243,9 @@ class MoveGroupInterface(object):
         print(marker.x - 2.0 /100.0, marker.y, marker.z - 0.065)
         #hover_over switch
         pose_goal = geometry_msgs.msg.Pose()
-        pose_goal.orientation.x = 0.7071068
-        pose_goal.orientation.y = 0.0
-        pose_goal.orientation.z = 0.0
+        pose_goal.orientation.x = 0
+        pose_goal.orientation.y = 0.7071068
+        pose_goal.orientation.z = 0
         pose_goal.orientation.w = 0.7071068
         pose_goal.position.x = marker.x - 10.0/100.0
         pose_goal.position.y = marker.y

@@ -61,3 +61,16 @@ class Gripper(object):
 
     def open(self):
         self.actuate("open")
+
+class Aruco_Marker():
+    def __init__(self):
+        self.id = None
+        self.x = None 
+        self.y = None 
+        self.z = None 
+        self.pan = None 
+        self.tilt = None 
+        self.roll = None 
+        self.variance = None 
+        self.numObservations = None 
+        self.links = None
