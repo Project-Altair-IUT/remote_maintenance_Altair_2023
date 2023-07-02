@@ -37,6 +37,25 @@ def get_params():
     
     # print(button_ids[0])
 
+def scan_centre():
+    arm.go_to_joint_state(top_left_center_joint_goal)
+    # Do sweeps
+    for row in range(4):
+        # Go left/right
+        print(row)
+        dy = -0.2 if row % 2 == 0 else 0.2
+        plan, fraction = arm.plan_cartesian_path((0, dy, 0))
+        arm.execute_plan(plan)
+
+        # if it's the last row no need to go further down
+        if row == 3:
+            break
+
+        # Go down
+        plan, fraction = arm.plan_cartesian_path((0, 0, -0.12))
+        arm.execute_plan(plan)
+
+
 def get_marker_positions():
     # Get the aruco positions
     tags = rospy.wait_for_message('/project_altair/aruco_poses', AltairAruco, 20)
@@ -65,15 +84,18 @@ def main():
     arm.go_home()
     
     gripper.close()
-    time.sleep(1)   # to make sure gripper closes before next moves
+    time.sleep(5)   # to make sure gripper closes before next moves
     
     get_params()
-
+    
+    scan_centre()
+    
     get_marker_positions()
+
+    press_buttons()
 
     
     
 if __name__ == '__main__':
     main()
-    press_buttons()
     

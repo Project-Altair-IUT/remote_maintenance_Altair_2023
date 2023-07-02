@@ -74,3 +74,4 @@ class Aruco_Marker():
         self.variance = None 
         self.numObservations = None 
         self.links = None
+
