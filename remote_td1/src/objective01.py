@@ -23,7 +23,7 @@ from utils import Gripper
 
 arm = MoveGroupInterface()
 
-gripper = Gripper()
+# gripper = Gripper()
 
 def scan_left():
     #ensure we are at home
