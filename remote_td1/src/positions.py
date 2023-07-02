@@ -36,6 +36,35 @@ home_joint_goal.append(radians(20))
 home_joint_goal.append(radians(90))
 home_joint_goal.append(radians(-90))
 
+## to rotate right
+yaw_right = []
+yaw_right.append(radians(-65))
+yaw_right.append(radians(-120))
+yaw_right.append(radians(100))
+yaw_right.append(radians(20))
+yaw_right.append(radians(90))
+yaw_right.append(radians(-90))
+
+## to look at inspection box area
+inspection_box_area = geometry_msgs.msg.Pose()
+inspection_box_area.position.x = 0.270782116587325
+inspection_box_area.position.y = -0.16284394837067445
+inspection_box_area.position.z = 0.242588179635982
+inspection_box_area.orientation.x = 0.38856184836603463
+inspection_box_area.orientation.y = 0.7319442460502426
+inspection_box_area.orientation.z = -0.1942904145466983
+inspection_box_area.orientation.w = 0.5249081305176977
+
+## to look at cover storage area
+cover_placement_area = geometry_msgs.msg.Pose()
+cover_placement_area.position.x = 0.20018393327402137
+cover_placement_area.position.y = -0.20693527041203508
+cover_placement_area.position.z = 0.1565074799711708
+cover_placement_area.orientation.x = 0.5304871735542791
+cover_placement_area.orientation.y = 0.8326623047085541
+cover_placement_area.orientation.z = -0.08535956120602305
+cover_placement_area.orientation.w = 0.13405443044728707
+
 ## to rotate left
 yaw_left = []
 yaw_left.append(radians(35))
@@ -44,6 +73,7 @@ yaw_left.append(radians(100))
 yaw_left.append(radians(20))
 yaw_left.append(radians(90))
 yaw_left.append(radians(-90))
+
 
 ## the place on the left where IMU module is kept
 imu_area = geometry_msgs.msg.Pose()
@@ -85,16 +115,6 @@ top_left_center_joint_goal[4] = radians(90)
 top_left_center_joint_goal[5] = radians(-90)
 
 
-# position: 
-#   x: 0.2814968119003112
-#   y: 0.11257212723531237
-#   z: 0.4887584644697226
-# orientation: 
-#   x: -7.721473549281385e-05
-#   y: 0.7057183659811934
-#   z: 0.0020666048089374714
-#   w: 0.7084894572957896
-
 
 ## top-right corner of center board
 # position: 
@@ -118,35 +138,6 @@ top_left_center_joint_goal[5] = radians(-90)
 #   z: 0.00211083518644061
 #   w: 0.7084963300788292
 
-# lid starting position
-lid = geometry_msgs.msg.Pose()
-lid.position.x = 0.2358072900697823
-lid.position.y = -0.23415303785561903
-lid.position.z = 0.2121063553827074
-lid.orientation.x = 0.11669231495027149
-lid.orientation.y = 0.6965663543474722
-lid.orientation.z = -0.11427244757320609
-lid.orientation.w = 0.6986558704743325
-
-#position to keep the lid
-lid_placement = geometry_msgs.msg.Pose()
-lid_placement.position.x = 0.2869116211452445
-lid_placement.position.y = -0.2031893729223361
-lid_placement.position.z = 0.2679293893266063
-lid_placement.orientation.x = 0.05766940464294197
-lid_placement.orientation.y = 0.9188643663753105
-lid_placement.orientation.z = -0.14686315274294895
-lid_placement.orientation.w = 0.36165415847219146
-
-# cover area
-cover_area = geometry_msgs.msg.Pose()
-cover_area.position.x = 0.14276348174207631
-cover_area.position.y = -0.21525259000332297
-cover_area.position.z = 0.3219434340662344
-cover_area.orientation.x = -0.030230889882158038
-cover_area.orientation.y = 0.998828681070058
-cover_area.orientation.z = 0.011901195725936231
-cover_area.orientation.w = 0.035856947849393805
 
 # # imu
 # imu_area = geometry_msgs.msg.Pose()

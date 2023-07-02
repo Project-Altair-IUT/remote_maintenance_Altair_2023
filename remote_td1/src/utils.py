@@ -35,11 +35,13 @@ def all_close(goal, actual, tolerance):
 
     return True
 
-class Gripper():
+class Gripper(object):
     def __init__(self):
+        # super(Gripper, self).__init__()    
         self.gripper_pub = rospy.Publisher('gripper_command', String, queue_size=10)
+        rospy.init_node('gripper_controller', anonymous=True)
         self.state = None
-        self.sleep_time = 5.0
+        self.sleep_time = 1
         self.command = "open"
 
     def actuate(self, command):

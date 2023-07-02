@@ -14,10 +14,16 @@ from moveit_commander.conversions import pose_to_list
 from altair_msgs.msg import AltairAruco
 # from erc_aruco_msg.srv import ErcAruco, ErcArucoRequest, ErcArucoResponse
 
-from positions import home_joint_goal, yaw_left, left_board, top_left_center_joint_goal, lid, lid_placement, cover_area, imu_area
+from positions import home_joint_goal, top_left_center_joint_goal, \
+                    yaw_left, imu_area, left_board, \
+                    yaw_right, inspection_box_area, cover_placement_area
+
 from moveitInterface import MoveGroupInterface
+from utils import Gripper
 
 arm = MoveGroupInterface()
+
+gripper = Gripper()
 
 def scan_left():
     #ensure we are at home
@@ -35,136 +41,112 @@ def scan_left():
     #look at left panel
     arm.go_to_pose_goal(left_board)
 
+    #go back to previous state
+    arm.go_to_joint_state(yaw_left)
+
     #return to home position
     arm.go_home()
 
+def scan_right():
+    #ensure we are at home
+    arm.go_home()
 
-def plan_cartesian_path(move_group, delta):
-    dx, dy, dz = delta
-    waypoints = []
+    #shoulder pan joint yaw right
+    arm.go_to_joint_state(yaw_right)
 
-    wpose = arm.move_group.get_current_pose().pose
-    print('from here')
-    print(wpose)
-    wpose.position.x += dx
-    wpose.position.y += dy
-    wpose.position.z += dz
-    print('going to right')
-    print(wpose)
-    waypoints.append(copy.deepcopy(wpose))
+    #look at cover placement area
+    arm.go_to_pose_goal(cover_placement_area)
 
-    # We want the Cartesian path to be interpolated at a resolution of 1 cm
-    # which is why we will specify 0.01 as the eef_step in Cartesian
-    # translation.  We will disable the jump threshold by setting it to 0.0,
-    # ignoring the check for infeasible jumps in joint space, which is sufficient
-    # for this tutorial.
-    (plan, fraction) = move_group.compute_cartesian_path(
-        waypoints, 0.01, 0.0  # waypoints to follow  # eef_step
-    )  # jump_threshold
+    #go back to previous state
+    arm.go_to_joint_state(yaw_right)
 
-    # Note: We are just planning, not asking move_group to actually move the robot yet:
-    return plan, fraction
+    #look at inspection panel area
+    arm.go_to_pose_goal(inspection_box_area)
 
-def main():
-    arm.move_group.go(home_joint_goal, wait=True)
-    arm.move_group.stop()
+    #go back to previous state
+    arm.go_to_joint_state(yaw_right)
 
-    # Go to left panel
-    arm.move_group.set_pose_target(left_board)
-    arm.move_group.go(wait=True)
-    arm.move_group.stop()
-    arm.move_group.clear_pose_targets()
+    #return to home position
+    arm.go_home()
 
-    # Go to top left of the center panel
-    # for some reason the pose goal is not working as expected
-    arm.move_group.go(top_left_center_joint_goal, wait=True)
-    arm.move_group.stop()
-
-    # Do a sweep
-    for row in range(5):
+def scan_centre():
+    arm.go_to_joint_state(top_left_center_joint_goal)
+    # Do sweeps
+    for row in range(4):
         # Go left/right
+        print(row)
         dy = -0.2 if row % 2 == 0 else 0.2
-        plan, fraction = plan_cartesian_path(arm.move_group, (0, dy, 0));
-        arm.move_group.execute(plan, wait=True)
-        arm.move_group.stop()
+        plan, fraction = arm.plan_cartesian_path((0, dy, 0))
+        arm.execute_plan(plan)
 
         # if it's the last row no need to go further down
-        if row == 4:
+        if row == 3:
             break
 
         # Go down
-        plan, fraction = plan_cartesian_path(arm.move_group, (0, 0, -0.1));
-        arm.move_group.execute(plan, wait=True)
-        arm.move_group.stop()
+        plan, fraction = arm.plan_cartesian_path((0, 0, -0.12))
+        arm.execute_plan(plan)
 
-    # Check IMU area
-    arm.move_group.set_pose_target(imu_area)
-    arm.move_group.go(wait=True)
-    arm.move_group.stop()
-    arm.move_group.clear_pose_targets()
 
-    # Check the cover area
-    arm.move_group.set_pose_target(cover_area)
-    arm.move_group.go(wait=True)
-    arm.move_group.stop()
-    arm.move_group.clear_pose_targets()
 
-    # Go check the lid & lid placements
-    arm.move_group.set_pose_target(lid)
-    arm.move_group.go(wait=True)
-    arm.move_group.stop()
-    arm.move_group.clear_pose_targets()
+def main():
+    # gripper.close()
+    scan_left()
+    scan_right()
+    scan_centre()
+    
+    
 
-    arm.move_group.set_pose_target(lid_placement)
-    arm.move_group.go(wait=True)
-    arm.move_group.stop()
-    arm.move_group.clear_pose_targets()
+    # # Get the aruco positions
+    # tags = rospy.wait_for_message('/project_altair/aruco_poses', AltairAruco, 5)
+    # memo = dict()
+    # for r in tags.results:
+    #     memo[r.id] = [
+    #         r.pose.pose.position.x,
+    #         r.pose.pose.position.y,
+    #         r.pose.pose.position.z,
+    #     ]
 
-    # Get the aruco positions
-    tags = rospy.wait_for_message('/project_altair/aruco_poses', AltairAruco, 5)
-    memo = dict()
-    for r in tags.results:
-        memo[r.id] = [
-            r.pose.pose.position.x,
-            r.pose.pose.position.y,
-            r.pose.pose.position.z,
-        ]
-
-    # Call the scorer
-    rospy.wait_for_service('erc_aruco_score')
-    try:
-        service_proxy = rospy.ServiceProxy('erc_aruco_score', ErcAruco)
-        service_msg = ErcArucoRequest()
-        service_msg.tag1=memo.get(1, [0, 0, 0])
-        service_msg.tag2=memo.get(2, [0, 0, 0])
-        service_msg.tag3=memo.get(3, [0, 0, 0])
-        service_msg.tag4=memo.get(4, [0, 0, 0])
-        service_msg.tag5=memo.get(5, [0, 0, 0])
-        service_msg.tag6=memo.get(6, [0, 0, 0])
-        service_msg.tag7=memo.get(7, [0, 0, 0])
-        service_msg.tag8=memo.get(8, [0, 0, 0])
-        service_msg.tag9=memo.get(9, [0, 0, 0])
-        service_msg.tag10=memo.get(10, [0, 0, 0])
-        service_msg.tag11=memo.get(11, [0, 0, 0])
-        service_msg.tag12=memo.get(12, [0, 0, 0])
-        service_msg.tag13=memo.get(13, [0, 0, 0])
-        service_msg.tag14=memo.get(14, [0, 0, 0])
-        print(service_msg)
-        service_response = service_proxy(service_msg)
-        print(f"Received score: {service_response.score}")
-    except rospy.ServiceException as e:
-        print(f"Service call failed: {e}")
+    # # Call the scorer
+    # rospy.wait_for_service('erc_aruco_score')
+    # try:
+    #     service_proxy = rospy.ServiceProxy('erc_aruco_score', ErcAruco)
+    #     service_msg = ErcArucoRequest()
+    #     service_msg.tag1=memo.get(1, [0, 0, 0])
+    #     service_msg.tag2=memo.get(2, [0, 0, 0])
+    #     service_msg.tag3=memo.get(3, [0, 0, 0])
+    #     service_msg.tag4=memo.get(4, [0, 0, 0])
+    #     service_msg.tag5=memo.get(5, [0, 0, 0])
+    #     service_msg.tag6=memo.get(6, [0, 0, 0])
+    #     service_msg.tag7=memo.get(7, [0, 0, 0])
+    #     service_msg.tag8=memo.get(8, [0, 0, 0])
+    #     service_msg.tag9=memo.get(9, [0, 0, 0])
+    #     service_msg.tag10=memo.get(10, [0, 0, 0])
+    #     service_msg.tag11=memo.get(11, [0, 0, 0])
+    #     service_msg.tag12=memo.get(12, [0, 0, 0])
+    #     service_msg.tag13=memo.get(13, [0, 0, 0])
+    #     service_msg.tag14=memo.get(14, [0, 0, 0])
+    #     print(service_msg)
+    #     service_response = service_proxy(service_msg)
+    #     print(f"Received score: {service_response.score}")
+    # except rospy.ServiceException as e:
+    #     print(f"Service call failed: {e}")
     
 if __name__ == '__main__':
-    # main()
-    # while True:
-    #     inp = input("press q to quit")
-    #     if inp == 'q':
-    #         break
+    arm.go_home()
+
+    main()
+    # t = 10
+    # while t:
+    #     scan_left()
+
+    #     scan_right()
+
     #     time.sleep(3)
 
-    # arm.go_home()
+    #     t -= 1
+
+
     # arm.go_to_joint_state(yaw_left)
 
-    scan_left()
-
+    

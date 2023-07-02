@@ -150,7 +150,7 @@ class MoveGroupInterface(object):
         self.go_to_joint_state(home_joint_goal)
         
 
-    def plan_cartesian_path(self, scale=1, delta = 0.1):
+    def plan_cartesian_path(self, delta, scale=1):
         # Copy class variables to local variables to make the web tutorials more clear.
         # In practice, you should use the class variables directly unless you have a good
         # reason not to.
@@ -169,14 +169,10 @@ class MoveGroupInterface(object):
         waypoints = []
 
         wpose = move_group.get_current_pose().pose
-        wpose.position.z -= scale * dz  # First move up (z)
-        wpose.position.y += scale * dy  # and sideways (y)
-        waypoints.append(copy.deepcopy(wpose))
-
-        wpose.position.x += scale * dx  # Second move forward/backwards in (x)
-        waypoints.append(copy.deepcopy(wpose))
-
-        wpose.position.y -= scale * dy  # Third move sideways (y)
+        wpose.position.x += dx
+        wpose.position.y += dy
+        wpose.position.z += dz
+        
         waypoints.append(copy.deepcopy(wpose))
 
         # We want the Cartesian path to be interpolated at a resolution of 1 cm
