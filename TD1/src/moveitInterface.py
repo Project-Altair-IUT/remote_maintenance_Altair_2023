@@ -236,5 +236,49 @@ class MoveGroupInterface(object):
 
         ## **Note:** The robot's current joint state must be within some tolerance of the
         ## first waypoint in the `RobotTrajectory`_ or ``execute()`` will fail
-        ## END_SUB_TUTORIAL   
+        ## END_SUB_TUTORIAL 
+
+    def press_switch(self, marker):
+        print("Calculated Switch", marker.id, "position")
+        print(marker.x - 2.0 /100.0, marker.y, marker.z - 0.065)
+        #hover_over switch
+        pose_goal = geometry_msgs.msg.Pose()
+        pose_goal.orientation.x = 0.7071068
+        pose_goal.orientation.y = 0.0
+        pose_goal.orientation.z = 0.0
+        pose_goal.orientation.w = 0.7071068
+        pose_goal.position.x = marker.x - 10.0/100.0
+        pose_goal.position.y = marker.y
+        pose_goal.position.z = marker.z - 0.065 #6.5 cm
+        self.go_to_pose_goal(pose_goal)
+
+        print("Hovering over switch", marker.id, "5 seconds before pressing")
+        time.sleep(5)
+        print("pressing switch", marker.id , "in 5 seconds")
+
+        #press switch
+        pose_goal = geometry_msgs.msg.Pose()
+        pose_goal.orientation.x = 0.7071068
+        pose_goal.orientation.y = 0.0
+        pose_goal.orientation.z = 0.0
+        pose_goal.orientation.w = 0.7071068
+        pose_goal.position.x = marker.x - 5.0 /100.0
+        pose_goal.position.y = marker.y
+        pose_goal.position.z = marker.z - 0.065 #6.5 cm
+        self.go_to_pose_goal(pose_goal)
+
+        #coming back
+        pose_goal = geometry_msgs.msg.Pose()
+        pose_goal.orientation.x = 0.7071068
+        pose_goal.orientation.y = 0.0
+        pose_goal.orientation.z = 0.0
+        pose_goal.orientation.w = 0.7071068
+        pose_goal.position.x = marker.x - 10.0/100.0
+        pose_goal.position.y = marker.y
+        pose_goal.position.z = marker.z - 0.065 #6.5 cm
+        self.go_to_pose_goal(pose_goal)
+
+        #retract arm
+        print("reseting to center position")
+        self.go_to_joint_state(home_joint_goal)  
 
