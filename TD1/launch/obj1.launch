@@ -1,5 +1,5 @@
 <launch>
-    <include file="$(find remote_td1)/launch/detect_aruco.launch" />
-    <node pkg="remote_td1" type="aruco_memory.py" name="remote_td1_aruco_memory" output="screen"></node>
-    <node pkg="remote_td1" type="objective01.py" name="remote_td1_aruco_objective01" output="screen"></node>
+    <include file="$(find TD1)/launch/detect_aruco.launch" />
+    <node pkg="TD1" type="aruco_memory.py" name="TD1_aruco_memory" output="screen"></node>
+    <node pkg="TD1" type="objective01.py" name="TD1_aruco_objective01" output="screen"></node>
 </launch>
