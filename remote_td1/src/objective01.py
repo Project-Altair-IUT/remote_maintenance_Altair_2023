@@ -97,40 +97,40 @@ def main():
     
     
 
-    # # Get the aruco positions
-    # tags = rospy.wait_for_message('/project_altair/aruco_poses', AltairAruco, 5)
-    # memo = dict()
-    # for r in tags.results:
-    #     memo[r.id] = [
-    #         r.pose.pose.position.x,
-    #         r.pose.pose.position.y,
-    #         r.pose.pose.position.z,
-    #     ]
+    # Get the aruco positions
+    tags = rospy.wait_for_message('/project_altair/aruco_poses', AltairAruco, 20)
+    memo = dict()
+    for idx, r in zip(tags.results_id, tags.results):
+        memo[idx] = [
+            r.translation.x,
+            r.translation.y,
+            r.translation.z,
+        ]
 
-    # # Call the scorer
-    # rospy.wait_for_service('erc_aruco_score')
-    # try:
-    #     service_proxy = rospy.ServiceProxy('erc_aruco_score', ErcAruco)
-    #     service_msg = ErcArucoRequest()
-    #     service_msg.tag1=memo.get(1, [0, 0, 0])
-    #     service_msg.tag2=memo.get(2, [0, 0, 0])
-    #     service_msg.tag3=memo.get(3, [0, 0, 0])
-    #     service_msg.tag4=memo.get(4, [0, 0, 0])
-    #     service_msg.tag5=memo.get(5, [0, 0, 0])
-    #     service_msg.tag6=memo.get(6, [0, 0, 0])
-    #     service_msg.tag7=memo.get(7, [0, 0, 0])
-    #     service_msg.tag8=memo.get(8, [0, 0, 0])
-    #     service_msg.tag9=memo.get(9, [0, 0, 0])
-    #     service_msg.tag10=memo.get(10, [0, 0, 0])
-    #     service_msg.tag11=memo.get(11, [0, 0, 0])
-    #     service_msg.tag12=memo.get(12, [0, 0, 0])
-    #     service_msg.tag13=memo.get(13, [0, 0, 0])
-    #     service_msg.tag14=memo.get(14, [0, 0, 0])
-    #     print(service_msg)
-    #     service_response = service_proxy(service_msg)
-    #     print(f"Received score: {service_response.score}")
-    # except rospy.ServiceException as e:
-    #     print(f"Service call failed: {e}")
+    # Call the scorer
+    rospy.wait_for_service('erc_aruco_score')
+    try:
+        service_proxy = rospy.ServiceProxy('erc_aruco_score', ErcAruco)
+        service_msg = ErcArucoRequest()
+        service_msg.tag1=memo.get(1, [0, 0, 0])
+        service_msg.tag2=memo.get(2, [0, 0, 0])
+        service_msg.tag3=memo.get(3, [0, 0, 0])
+        service_msg.tag4=memo.get(4, [0, 0, 0])
+        service_msg.tag5=memo.get(5, [0, 0, 0])
+        service_msg.tag6=memo.get(6, [0, 0, 0])
+        service_msg.tag7=memo.get(7, [0, 0, 0])
+        service_msg.tag8=memo.get(8, [0, 0, 0])
+        service_msg.tag9=memo.get(9, [0, 0, 0])
+        service_msg.tag10=memo.get(10, [0, 0, 0])
+        service_msg.tag11=memo.get(11, [0, 0, 0])
+        service_msg.tag12=memo.get(12, [0, 0, 0])
+        service_msg.tag13=memo.get(13, [0, 0, 0])
+        service_msg.tag14=memo.get(14, [0, 0, 0])
+        print(service_msg)
+        service_response = service_proxy(service_msg)
+        print(f"Received score: {service_response.score}")
+    except rospy.ServiceException as e:
+        print(f"Service call failed: {e}")
     
 if __name__ == '__main__':
     arm.go_home()
