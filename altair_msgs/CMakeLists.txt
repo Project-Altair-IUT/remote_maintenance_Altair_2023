@@ -9,7 +9,7 @@ project(altair_msgs)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   std_msgs
-  vision_msgs
+  geometry_msgs
   message_generation
 )
 
@@ -70,7 +70,7 @@ add_message_files(
 generate_messages(
   DEPENDENCIES
   std_msgs
-  vision_msgs
+  geometry_msgs
 )
 
 ################################################

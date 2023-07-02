@@ -12,7 +12,7 @@ from std_msgs.msg import String
 from moveit_commander.conversions import pose_to_list
 
 from altair_msgs.msg import AltairAruco
-# from erc_aruco_msg.srv import ErcAruco, ErcArucoRequest, ErcArucoResponse
+from erc_aruco_msg.srv import ErcAruco, ErcArucoRequest, ErcArucoResponse
 
 from positions import home_joint_goal, yaw_left, left_board, top_left_center_joint_goal, lid, lid_placement, cover_area, imu_area
 from moveitInterface import MoveGroupInterface
@@ -44,13 +44,11 @@ def plan_cartesian_path(move_group, delta):
     waypoints = []
 
     wpose = arm.move_group.get_current_pose().pose
-    print('from here')
-    print(wpose)
+
     wpose.position.x += dx
     wpose.position.y += dy
     wpose.position.z += dz
-    print('going to right')
-    print(wpose)
+
     waypoints.append(copy.deepcopy(wpose))
 
     # We want the Cartesian path to be interpolated at a resolution of 1 cm
@@ -121,13 +119,13 @@ def main():
     arm.move_group.clear_pose_targets()
 
     # Get the aruco positions
-    tags = rospy.wait_for_message('/project_altair/aruco_poses', AltairAruco, 5)
+    tags = rospy.wait_for_message('/project_altair/aruco_poses', AltairAruco, 20)
     memo = dict()
-    for r in tags.results:
-        memo[r.id] = [
-            r.pose.pose.position.x,
-            r.pose.pose.position.y,
-            r.pose.pose.position.z,
+    for idx, r in zip(tags.results_id, tags.results):
+        memo[idx] = [
+            r.translation.x,
+            r.translation.y,
+            r.translation.z,
         ]
 
     # Call the scorer
@@ -156,7 +154,7 @@ def main():
         print(f"Service call failed: {e}")
     
 if __name__ == '__main__':
-    # main()
+    main()
     # while True:
     #     inp = input("press q to quit")
     #     if inp == 'q':
@@ -166,5 +164,5 @@ if __name__ == '__main__':
     # arm.go_home()
     # arm.go_to_joint_state(yaw_left)
 
-    scan_left()
+    # scan_left()
 
