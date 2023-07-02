@@ -6,7 +6,6 @@
         <param name="image_transport" value="compressed"/>
         <param name="publish_images" value="true" />
         <param name="fiducial_len_override" value="1-9: 0.05, 10: 0.04, 11-12: 0.05, 13: 0.04, 14: 0.05"/>
-        <param name="publish_images" value="True"/>
         <param name="do_pose_estimation" value="True"/>
         <param name="vis_msgs" value="True"/>
         <param name="verbose" value="False"/>
