@@ -21,9 +21,9 @@ from positions import home_joint_goal, top_left_center_joint_goal, \
 from moveitInterface import MoveGroupInterface
 from utils import Gripper
 
-arm = MoveGroupInterface()
+gripper = Gripper()
 
-# gripper = Gripper()
+arm = MoveGroupInterface()
 
 def scan_left():
     #ensure we are at home
@@ -90,11 +90,13 @@ def scan_centre():
 
 
 def main():
-    # gripper.close()
+    arm.go_home()
+    gripper.open()
+    time.sleep(6)
     scan_left()
     scan_right()
     scan_centre()
-    
+    gripper.close()    
     
 
     # Get the aruco positions
