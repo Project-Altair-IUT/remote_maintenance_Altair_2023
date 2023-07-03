@@ -1,5 +1,8 @@
 <launch>
+    <!-- <arg name="tags" default="0,0,0,0" /> -->
     <include file="$(find TD1)/launch/detect_aruco.launch" />
     <node pkg="TD1" type="aruco_memory.py" name="TD1_aruco_memory" output="screen"></node>
-    <node pkg="TD1" type="objective02.py" name="TD1_aruco_objective02" output="screen"></node>
+    <!-- <node pkg="TD1" type="objective02.py" name="TD1_aruco_objective02" output="screen">
+        <param name="tags" value="$(arg tags)" />
+    </node> -->
 </launch>

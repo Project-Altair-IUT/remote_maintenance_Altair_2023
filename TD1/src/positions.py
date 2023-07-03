@@ -123,3 +123,13 @@ top_left_center_joint_goal[2] = radians(39)
 top_left_center_joint_goal[3] = radians(49)
 top_left_center_joint_goal[4] = radians(90)
 top_left_center_joint_goal[5] = radians(-90)
+
+# center pose of switch board, optimal for swich press
+switch_center_pose = geometry_msgs.msg.Pose()
+switch_center_pose.position.x = 0.3242394783080311
+switch_center_pose.position.y = 0
+switch_center_pose.position.z = 0.37312493268311087
+switch_center_pose.orientation.x = 0
+switch_center_pose.orientation.y = 0.7070950753755282
+switch_center_pose.orientation.z = 0
+switch_center_pose.orientation.w = 0.7070950753755282

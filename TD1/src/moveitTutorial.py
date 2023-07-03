@@ -44,10 +44,10 @@ def main():
         # input("============ Press `Enter` to go to home pose ...")
         # arm.go_home()
 
-        input(
-            "============ Press `Enter` to execute a movement using a joint state goal ..."
-        )
-        arm.go_to_joint_state(yaw_right)
+        # input(
+        #     "============ Press `Enter` to execute a movement using a joint state goal ..."
+        # )
+        # arm.go_to_joint_state(yaw_right)
 
         # input("============ Press `Enter` to plan and display a Cartesian path ...")
         # cartesian_plan, fraction = arm.plan_cartesian_path()
@@ -72,9 +72,9 @@ def main():
         # cartesian_plan, fraction = tutorial.plan_cartesian_path(scale=-1)
         # tutorial.execute_plan(cartesian_plan)
 
-        # while True:
-        #     input("============ Press `Enter` to see current pose ...")
-        #     arm.show_current_pose()
+        while True:
+            input("============ Press `Enter` to see current pose ...")
+            arm.show_current_pose()
             
 
         print("============ Python tutorial demo complete!")
@@ -85,8 +85,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # main()
-    gripper_pub = rospy.Publisher('gripper_command', String, queue_size=10)
-    gripper_pub.publish("close")
-
+    main()
     # arm.go_to_joint_state(yaw_left)
