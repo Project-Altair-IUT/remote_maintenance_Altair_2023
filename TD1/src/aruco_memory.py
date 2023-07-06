@@ -20,6 +20,8 @@ def main():
                 pos = Transform()
                 # for some reason the transform needs to be negated
                 # except for the z axis?
+                # maybe because z axis direction is same for aruco and camera
+                # but x and y axis direction is opposite of camera
                 pos.translation.x = -trans.transform.translation.x
                 pos.translation.y = -trans.transform.translation.y
                 pos.translation.z =  trans.transform.translation.z
