@@ -32,10 +32,7 @@ def readFile():
     
 
 def main():
-    try:
-        readFile()
-    except Exception as f:
-        print(f)
+    readFile()
     rospy.init_node('project_altair_aruco_memory', anonymous=True)
     tfBuffer = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(tfBuffer)
@@ -49,9 +46,11 @@ def main():
                 marker.pose = tf_resultant
                 marker.numObservations += 1
                 MEMORY[idx] = marker
+                print(f'spotted: {idx}')
 
             except Exception as e:
                 rate.sleep()
+                print(":::->")
                 print(e)
         
         msg = AltairAruco()
@@ -59,8 +58,10 @@ def main():
             msg.results_id.append(key)
             msg.results.append(val.pose)
         pub.publish(msg)
+
+        writeFile()
+
     
-    writeFile()
                 
 if __name__ == '__main__':
     main()
