@@ -1,4 +1,5 @@
-int64 input
+int64 starting_id
+int64 ending_id
 ---
 bool success
-int64 marker_id
+int64 found_count
