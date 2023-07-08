@@ -1,13 +1,28 @@
 #!/usr/bin/env python3
+import pickle
 import rospy
 import tf2_ros
 from geometry_msgs.msg import Transform
+
 from altair_msgs.msg import AltairAruco
 
+from utils import Aruco_Marker
+
+response_wait = 3.0
 MEMORY = dict()
 pub = rospy.Publisher('/project_altair/aruco_poses', AltairAruco, queue_size=1)
 
+def writeFile():
+    with open('marker_data.pkl', 'wb') as fp:
+        pickle.dump(MEMORY, fp)
+        print('aruco poses saved to file')
+
+def readFile():
+    with open('marker_data.pkl', 'rb') as fp:
+        MEMORY = pickle.load(fp)
+
 def main():
+    readFile()
     rospy.init_node('project_altair_aruco_memory', anonymous=True)
     tfBuffer = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(tfBuffer)
@@ -16,17 +31,12 @@ def main():
     while not rospy.is_shutdown():
         for idx in range(1, 15):
             try:
-                trans = tfBuffer.lookup_transform('base', 'fiducial_' + str(idx), rospy.Time())
-                pos = Transform()
-                # for some reason the transform needs to be negated
-                # except for the z axis?
-                # maybe because z axis direction is same for aruco and camera
-                # but x and y axis direction is opposite of camera
-                pos.translation.x = -trans.transform.translation.x
-                pos.translation.y = -trans.transform.translation.y
-                pos.translation.z =  trans.transform.translation.z
-                pos.rotation = trans.transform.rotation
-                MEMORY[idx] = pos
+                tf_resultant = tfBuffer.lookup_transform('base_link', 'fiducial_' + str(idx), rospy.Time(), rospy.Duration(response_wait))
+                marker = Aruco_Marker(id = idx)
+                marker.pose = tf_resultant
+                marker.numObservations += 1
+                MEMORY[idx] = marker
+
             except Exception as e:
                 rate.sleep()
                 print(e)
@@ -34,9 +44,10 @@ def main():
         msg = AltairAruco()
         for key, val in MEMORY.items():
             msg.results_id.append(key)
-            msg.results.append(val)
+            msg.results.append(val.pose)
         pub.publish(msg)
-        
-        
+    
+    writeFile()
+                
 if __name__ == '__main__':
     main()
