@@ -1,6 +1,8 @@
+#!/usr/bin/env python
+
 import rospy
 import time
-import geometry_msgs
+import geometry_msgs.msg
 from math import pi, tau, dist, fabs, cos
 from moveit_commander.conversions import pose_to_list
 from std_msgs.msg import String
@@ -63,8 +65,15 @@ class Gripper(object):
         self.actuate("open")
 
 class Aruco_Marker():
-    def __init__(self):
-        self.position = geometry_msgs.msg.Pose() 
-        self.numObservations = None 
+    def __init__(self, id = 0):
+        self.id = id
+        self.pose = geometry_msgs.msg.Pose() 
+        self.numObservations = 0 
         self.links = None
+    
+    def print_info(self):
+        print(f'ID: {self.id}')
+        print(self.pose)
+
+        
 
