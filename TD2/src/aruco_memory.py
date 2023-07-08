@@ -13,13 +13,23 @@ MEMORY = dict()
 pub = rospy.Publisher('/project_altair/aruco_poses', AltairAruco, queue_size=1)
 
 def writeFile():
-    with open('marker_data.pkl', 'wb') as fp:
-        pickle.dump(MEMORY, fp)
-        print('aruco poses saved to file')
+    try:
+        with open('marker_data.pkl', 'wb') as fp:
+            pickle.dump(MEMORY, fp)
+            print('aruco poses saved to file')
 
+    except Exception as f:
+        print(f)
+    
 def readFile():
-    with open('marker_data.pkl', 'rb') as fp:
-        MEMORY = pickle.load(fp)
+    try:
+        with open('marker_data.pkl', 'rb') as fp:
+            MEMORY = pickle.load(fp)
+            print('aruco poses read from file')
+
+    except Exception as f:
+        print(f)
+    
 
 def main():
     try:
