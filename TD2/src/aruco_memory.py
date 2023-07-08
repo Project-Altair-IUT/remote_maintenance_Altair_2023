@@ -22,7 +22,10 @@ def readFile():
         MEMORY = pickle.load(fp)
 
 def main():
-    readFile()
+    try:
+        readFile()
+    except Exception as f:
+        print(f)
     rospy.init_node('project_altair_aruco_memory', anonymous=True)
     tfBuffer = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(tfBuffer)
