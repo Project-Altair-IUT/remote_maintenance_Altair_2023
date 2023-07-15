@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import pickle
 import rospy
 import time
 import geometry_msgs.msg
@@ -7,6 +8,7 @@ from math import pi, tau, dist, fabs, cos
 from moveit_commander.conversions import pose_to_list
 from std_msgs.msg import String
 
+from altair_msgs.srv import ArucoService, ArucoServiceResponse
 
 def all_close(goal, actual, tolerance):
     """
@@ -75,5 +77,32 @@ class Aruco_Marker():
         print(f'ID: {self.id}')
         print(self.pose)
 
+
+def writeFile(data):
+    try:
+        with open('marker_data.pkl', 'wb') as fp:
+            pickle.dump(data, fp)
+            print('aruco poses saved to file')
+
+    except Exception as f:
+        print(f)
+    
+def readFile():
+    try:
+        with open('marker_data.pkl', 'rb') as fp:
+            data = pickle.load(fp)
+            print('aruco poses read from file')
+        return data
+    except Exception as f:
+        print(f)
+
+def aruco_handler_caller(markers):
+    rospy.wait_for_service('aruco_service')
+    try:
+        aruco_service = rospy.ServiceProxy('aruco_service', ArucoService)
+        response = aruco_service(markers)
+        return response
+    except rospy.ServiceException as e:
+        print("Service call failed: %s"%e)
         
 

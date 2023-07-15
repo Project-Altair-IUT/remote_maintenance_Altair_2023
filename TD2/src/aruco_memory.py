@@ -45,12 +45,12 @@ def main():
                 marker = Aruco_Marker(id = idx)
                 marker.pose = tf_resultant
                 marker.numObservations += 1
-                MEMORY[idx] = marker
-                print(f'spotted: {idx}')
+                MEMORY[idx] = marker    #saving the marker object in the dictionary
+                print(f'spotted: {idx}') 
 
             except Exception as e:
                 rate.sleep()
-                print(":::->")
+                print(f":::->Marker {idx} not found!")
                 print(e)
         
         msg = AltairAruco()

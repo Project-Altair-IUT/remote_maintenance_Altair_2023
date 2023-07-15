@@ -19,7 +19,7 @@ from positions import home_joint_goal, top_left_center_joint_goal, \
                     yaw_right, inspection_box_area, cover_placement_area
 
 from moveitInterface import MoveGroupInterface
-from utils import Gripper
+from utils import Gripper, readFile, aruco_handler_caller
 
 gripper = Gripper()
 
@@ -31,6 +31,8 @@ def scan_left():
 
     #shoulder pan joint yaw left
     arm.go_to_joint_state(yaw_left)
+
+    aruco_handler_caller([10, 11])
 
     #look at imu area
     arm.go_to_pose_goal(imu_area)
@@ -54,6 +56,9 @@ def scan_right():
     #shoulder pan joint yaw right
     arm.go_to_joint_state(yaw_right)
 
+    aruco_handler_caller([12, 13, 14])
+
+
     #look at cover placement area
     arm.go_to_pose_goal(cover_placement_area)
 
@@ -71,6 +76,9 @@ def scan_right():
 
 def scan_centre():
     arm.go_to_joint_state(top_left_center_joint_goal)
+
+    aruco_handler_caller([1,2,3,4,5,6,7,8,9])
+
     # Do sweeps
     for row in range(4):
         # Go left/right
@@ -99,13 +107,14 @@ def main():
     
 
     # Get the aruco positions
-    tags = rospy.wait_for_message('/project_altair/aruco_poses', AltairAruco, 20)
+    # tags = rospy.wait_for_message('/project_altair/aruco_poses', AltairAruco, 20)
+    aruco_memory = readFile()
     memo = dict()
-    for idx, r in zip(tags.results_id, tags.results):
+    for idx, marker in aruco_memory.items():
         memo[idx] = [
-            r.translation.x,
-            r.translation.y,
-            r.translation.z,
+            marker.pose.translation.x,
+            marker.pose.translation.y,
+            marker.pose.translation.z
         ]
 
     # Call the scorer
