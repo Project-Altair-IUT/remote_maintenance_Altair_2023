@@ -8,7 +8,7 @@ from altair_msgs.msg import AltairAruco
 
 from utils import Aruco_Marker
 
-response_wait = 3.0
+response_wait = 1.0
 MEMORY = dict()
 pub = rospy.Publisher('/project_altair/aruco_poses', AltairAruco, queue_size=1)
 
@@ -37,7 +37,7 @@ def main():
     tfBuffer = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(tfBuffer)
 
-    rate = rospy.Rate(1.0)
+    rate = rospy.Rate(10)
     while not rospy.is_shutdown():
         for idx in range(1, 15):
             try:
@@ -61,7 +61,5 @@ def main():
 
         writeFile()
 
-    
-                
 if __name__ == '__main__':
     main()

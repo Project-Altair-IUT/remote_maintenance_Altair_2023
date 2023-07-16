@@ -7,6 +7,9 @@ import geometry_msgs.msg
 from math import pi, tau, dist, fabs, cos
 from moveit_commander.conversions import pose_to_list
 from std_msgs.msg import String
+from std_srvs.srv import SetBool
+
+
 
 from altair_msgs.srv import ArucoService, ArucoServiceResponse
 
@@ -102,6 +105,15 @@ def aruco_handler_caller(markers):
         aruco_service = rospy.ServiceProxy('aruco_service', ArucoService)
         response = aruco_service(markers)
         return response
+    except rospy.ServiceException as e:
+        print("Service call failed: %s"%e)
+
+def detect_enable(command):
+    rospy.wait_for_service('enable_detections')
+    try:
+        enable_detections = rospy.ServiceProxy('enable_detections', SetBool)
+        response = enable_detections(command)
+        return response.message
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
         

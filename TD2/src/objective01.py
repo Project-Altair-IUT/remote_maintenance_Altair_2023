@@ -19,7 +19,7 @@ from positions import home_joint_goal, top_left_center_joint_goal, \
                     yaw_right, inspection_box_area, cover_placement_area
 
 from moveitInterface import MoveGroupInterface
-from utils import Gripper, readFile, aruco_handler_caller
+from utils import Gripper, readFile, aruco_handler_caller, detect_enable
 
 gripper = Gripper()
 
@@ -32,16 +32,22 @@ def scan_left():
     #shoulder pan joint yaw left
     arm.go_to_joint_state(yaw_left)
 
-    aruco_handler_caller([10, 11])
-
     #look at imu area
     arm.go_to_pose_goal(imu_area)
 
+    detect_enable(True)
+    time.sleep(5)
+    detect_enable(False)
+    
     #go back to previous state
     arm.go_to_joint_state(yaw_left)
 
     #look at left panel
     arm.go_to_joint_state(left_board_joint)
+
+    detect_enable(True)
+    time.sleep(5)
+    detect_enable(False)
 
     #go back to previous state
     arm.go_to_joint_state(yaw_left)
@@ -56,17 +62,24 @@ def scan_right():
     #shoulder pan joint yaw right
     arm.go_to_joint_state(yaw_right)
 
-    aruco_handler_caller([12, 13, 14])
-
 
     #look at cover placement area
     arm.go_to_pose_goal(cover_placement_area)
+
+    detect_enable(True)
+    time.sleep(5)
+    detect_enable(False)
 
     #go back to previous state
     arm.go_to_joint_state(yaw_right)
 
     #look at inspection panel area
     arm.go_to_pose_goal(inspection_box_area)
+
+
+    detect_enable(True)
+    time.sleep(5)
+    detect_enable(False)
 
     #go back to previous state
     arm.go_to_joint_state(yaw_right)
@@ -76,9 +89,9 @@ def scan_right():
 
 def scan_centre():
     arm.go_to_joint_state(top_left_center_joint_goal)
+    
 
-    aruco_handler_caller([1,2,3,4,5,6,7,8,9])
-
+    detect_enable(True)
     # Do sweeps
     for row in range(4):
         # Go left/right
