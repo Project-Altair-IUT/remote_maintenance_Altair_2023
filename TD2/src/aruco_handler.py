@@ -4,7 +4,7 @@ import time
 import rospy
 import tf2_ros
 from geometry_msgs.msg import Transform
-from utils import Aruco_Marker, writeFile, readFile
+from utils import Aruco_Marker, writeFile, readFile, detect_enable
 
 from std_srvs.srv import SetBool
 from altair_msgs.srv import ArucoService, ArucoServiceResponse
@@ -12,16 +12,6 @@ from altair_msgs.srv import ArucoService, ArucoServiceResponse
 response_wait = 1.0
 MEMORY = dict()
 
-
-
-def detect_enable(command):
-    rospy.wait_for_service('enable_detections')
-    try:
-        enable_detections = rospy.ServiceProxy('enable_detections', SetBool)
-        response = enable_detections(command)
-        return response.message
-    except rospy.ServiceException as e:
-        print("Service call failed: %s"%e)
 
 def callback(request):
     detect_enable(True)

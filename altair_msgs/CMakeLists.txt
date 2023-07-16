@@ -56,6 +56,7 @@ add_message_files(
 add_service_files(
   FILES
   ArucoService.srv
+  saverController.srv
 )
 
 ## Generate actions in the 'action' folder

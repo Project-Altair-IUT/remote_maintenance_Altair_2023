@@ -19,7 +19,7 @@ from positions import home_joint_goal, top_left_center_joint_goal, \
                     yaw_right, inspection_box_area, cover_placement_area
 
 from moveitInterface import MoveGroupInterface
-from utils import Gripper, readFile, aruco_handler_caller, detect_enable
+from utils import Gripper, readFile, aruco_saver_caller
 
 gripper = Gripper()
 
@@ -35,19 +35,19 @@ def scan_left():
     #look at imu area
     arm.go_to_pose_goal(imu_area)
 
-    detect_enable(True)
-    time.sleep(5)
-    detect_enable(False)
+    aruco_saver_caller(True, [10])
+    time.sleep(3)
+    aruco_saver_caller(False, [])
     
     #go back to previous state
     arm.go_to_joint_state(yaw_left)
 
     #look at left panel
     arm.go_to_joint_state(left_board_joint)
+    aruco_saver_caller(True, [11])
+    time.sleep(3)
+    aruco_saver_caller(False, [])
 
-    detect_enable(True)
-    time.sleep(5)
-    detect_enable(False)
 
     #go back to previous state
     arm.go_to_joint_state(yaw_left)
@@ -66,20 +66,11 @@ def scan_right():
     #look at cover placement area
     arm.go_to_pose_goal(cover_placement_area)
 
-    detect_enable(True)
-    time.sleep(5)
-    detect_enable(False)
-
     #go back to previous state
     arm.go_to_joint_state(yaw_right)
 
     #look at inspection panel area
     arm.go_to_pose_goal(inspection_box_area)
-
-
-    detect_enable(True)
-    time.sleep(5)
-    detect_enable(False)
 
     #go back to previous state
     arm.go_to_joint_state(yaw_right)
@@ -90,8 +81,6 @@ def scan_right():
 def scan_centre():
     arm.go_to_joint_state(top_left_center_joint_goal)
     
-
-    detect_enable(True)
     # Do sweeps
     for row in range(4):
         # Go left/right
@@ -115,19 +104,19 @@ def main():
     gripper.open()
     time.sleep(6)   # to make sure gripper opens before next moves
     scan_left()
-    scan_right()
-    scan_centre()
+    # scan_right()
+    # scan_centre()
     
 
     # Get the aruco positions
-    # tags = rospy.wait_for_message('/project_altair/aruco_poses', AltairAruco, 20)
-    aruco_memory = readFile()
+    tags = rospy.wait_for_message('/project_altair/aruco_poses', AltairAruco, 20)
+    # aruco_memory = readFile()
     memo = dict()
-    for idx, marker in aruco_memory.items():
+    for idx, r in zip(tags.results_id, tags.results):
         memo[idx] = [
-            marker.pose.translation.x,
-            marker.pose.translation.y,
-            marker.pose.translation.z
+            r.translation.x,
+            r.translation.y,
+            r.translation.z,
         ]
 
     # Call the scorer

@@ -99,11 +99,11 @@ def readFile():
     except Exception as f:
         print(f)
 
-def aruco_handler_caller(markers):
-    rospy.wait_for_service('aruco_service')
+def aruco_saver_caller(command, markers):
+    rospy.wait_for_service('saverController')
     try:
-        aruco_service = rospy.ServiceProxy('aruco_service', ArucoService)
-        response = aruco_service(markers)
+        saverController = rospy.ServiceProxy('saverController', ArucoService)
+        response = saverController(command, markers)
         return response
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
