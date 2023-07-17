@@ -151,6 +151,8 @@ def main():
         print(service_msg)
         service_response = service_proxy(service_msg)
         print(f"Received score: {service_response.score}")
+        print(f"Corrected tags: {service_response.corrects}")
+
     except rospy.ServiceException as e:
         print(f"Service call failed: {e}")
     

@@ -1,7 +1,7 @@
 <launch>
     <remap from="/camera/compressed" to="/camera_image/image_raw/compressed"/>
     <remap from="/camera_info" to="/camera_image/camera_info"/>
-    <node pkg="aruco_detector" name="aruco_detector" type="aruco_detector" output="screen" respawn="false">
+    <node pkg="aruco_detect" name="aruco_detect" type="aruco_detect" output="screen" respawn="false">
         <param name="dictionary" value="16"/>   
         <param name="image_transport" value="compressed"/>
         <param name="publish_images" value="False" />
