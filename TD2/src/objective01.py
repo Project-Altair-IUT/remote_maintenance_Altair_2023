@@ -19,7 +19,7 @@ from positions import home_joint_goal, top_left_center_joint_goal, \
                     yaw_right, inspection_box_area, cover_placement_area
 
 from moveitInterface import MoveGroupInterface
-from utils import Gripper, readFile, aruco_saver_caller
+from utils import Gripper, readFile, aruco_saver_caller, detect_enable
 
 gripper = Gripper()
 
@@ -27,7 +27,7 @@ arm = MoveGroupInterface()
 
 def scan_left():
     #ensure we are at home
-    arm.go_home()
+    # arm.go_home()
 
     #shoulder pan joint yaw left
     arm.go_to_joint_state(yaw_left)
@@ -50,10 +50,10 @@ def scan_left():
 
 
     #go back to previous state
-    arm.go_to_joint_state(yaw_left)
+    # arm.go_to_joint_state(yaw_left)
 
     #return to home position
-    arm.go_home()
+    # arm.go_home()
 
 def scan_right():
     #ensure we are at home
@@ -63,14 +63,22 @@ def scan_right():
     arm.go_to_joint_state(yaw_right)
 
 
-    #look at cover placement area
+    #look at planel cover storage area
     arm.go_to_pose_goal(cover_placement_area)
+
+    aruco_saver_caller(True, [14])
+    time.sleep(3)
+    aruco_saver_caller(False, [])
 
     #go back to previous state
     arm.go_to_joint_state(yaw_right)
 
     #look at inspection panel area
-    arm.go_to_pose_goal(inspection_box_area)
+    # arm.go_to_pose_goal(inspection_box_area)
+
+    # aruco_saver_caller(True, [12, 13])
+    # time.sleep(3)
+    # aruco_saver_caller(False, [])
 
     #go back to previous state
     arm.go_to_joint_state(yaw_right)
@@ -80,7 +88,7 @@ def scan_right():
 
 def scan_centre():
     arm.go_to_joint_state(top_left_center_joint_goal)
-    
+    aruco_saver_caller(True, [i for i in range (1,10)])
     # Do sweeps
     for row in range(4):
         # Go left/right
@@ -96,15 +104,16 @@ def scan_centre():
         # Go down
         plan, fraction = arm.plan_cartesian_path((0, 0, -0.12))
         arm.execute_plan(plan)
-
-
+    
+    aruco_saver_caller(False, [])
 
 def main():
+    detect_enable(False)
     arm.go_home()
-    gripper.open()
-    time.sleep(6)   # to make sure gripper opens before next moves
+    # gripper.open()
+    # time.sleep(6)   # to make sure gripper opens before next moves
     scan_left()
-    # scan_right()
+    scan_right()
     # scan_centre()
     
 
@@ -118,7 +127,8 @@ def main():
             r.translation.y,
             r.translation.z,
         ]
-
+    print('got these:')
+    print(memo)
     # Call the scorer
     rospy.wait_for_service('erc_aruco_score')
     try:

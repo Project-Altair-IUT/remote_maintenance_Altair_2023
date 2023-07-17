@@ -9,9 +9,7 @@ from moveit_commander.conversions import pose_to_list
 from std_msgs.msg import String
 from std_srvs.srv import SetBool
 
-
-
-from altair_msgs.srv import ArucoService, ArucoServiceResponse
+from altair_msgs.srv import ArucoService, ArucoServiceResponse, saverController
 
 def all_close(goal, actual, tolerance):
     """
@@ -85,7 +83,8 @@ def writeFile(data):
     try:
         with open('marker_data.pkl', 'wb') as fp:
             pickle.dump(data, fp)
-            print('aruco poses saved to file')
+        print('aruco poses saved to file')
+        print(data)
 
     except Exception as f:
         print(f)
@@ -94,16 +93,21 @@ def readFile():
     try:
         with open('marker_data.pkl', 'rb') as fp:
             data = pickle.load(fp)
-            print('aruco poses read from file')
+        print('aruco poses read from file')
         return data
     except Exception as f:
         print(f)
+        return dict()
 
 def aruco_saver_caller(command, markers):
-    rospy.wait_for_service('saverController')
+    rospy.wait_for_service('saverControllerService')
     try:
-        saverController = rospy.ServiceProxy('saverController', ArucoService)
-        response = saverController(command, markers)
+        _saverControllerProxy = rospy.ServiceProxy('saverControllerService', saverController)
+        request_msg = saverController()
+        request_msg.command = command
+        request_msg.markers_to_find = markers
+        response = _saverControllerProxy(command, markers)
+
         return response
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
