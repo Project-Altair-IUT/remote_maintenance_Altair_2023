@@ -44,16 +44,25 @@ class Gripper(object):
     def __init__(self):
         # super(Gripper, self).__init__()    
         self.gripper_pub = rospy.Publisher('gripper_command', String, queue_size=10)
-        self.sleep_time = 1
+        self.sleep_time = 6
         self.state = "open"
+        self.gripper_pub.publish(self.state)
 
     def actuate(self, command):
-        log_msg = "Gripper state : " + command
-        rospy.loginfo(log_msg)
+        if command == self.state:
+            log_msg = "Gripper already in state : " + command
+            rospy.loginfo(log_msg)
+            return
+
         self.state = command
         self.gripper_pub.publish(self.state)
+
+        print(f"Waiting {self.sleep_time} seconds for completion")
+
         time.sleep(self.sleep_time)
-        return self.state
+
+        log_msg = "Gripper state : " + command
+        rospy.loginfo(log_msg)
 
     def close(self):
         self.actuate("close")
