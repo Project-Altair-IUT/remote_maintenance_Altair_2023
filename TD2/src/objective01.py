@@ -16,7 +16,7 @@ from erc_aruco_msg.srv import ErcAruco, ErcArucoRequest, ErcArucoResponse
 
 from positions import home_joint_goal, top_left_center_joint_goal, \
                     yaw_left, imu_area, left_board_joint, \
-                    yaw_right, inspection_box_area, cover_placement_area
+                    yaw_right, inspection_box_area,inspection_panel_cover, cover_placement_area
 
 from moveitInterface import MoveGroupInterface
 from utils import Gripper, readFile, aruco_saver_caller, detect_enable
@@ -50,10 +50,10 @@ def scan_left():
 
 
     #go back to previous state
-    # arm.go_to_joint_state(yaw_left)
+    arm.go_to_joint_state(yaw_left)
 
     #return to home position
-    # arm.go_home()
+    arm.go_home()
 
 def scan_right():
     #ensure we are at home
@@ -74,11 +74,18 @@ def scan_right():
     arm.go_to_joint_state(yaw_right)
 
     #look at inspection panel area
-    # arm.go_to_pose_goal(inspection_box_area)
+    arm.go_to_pose_goal(inspection_box_area)
 
-    # aruco_saver_caller(True, [12, 13])
-    # time.sleep(3)
-    # aruco_saver_caller(False, [])
+    aruco_saver_caller(True, [12])
+    time.sleep(3)
+    aruco_saver_caller(False, [])
+
+    #look at inspection panel cover
+    arm.go_to_pose_goal(inspection_panel_cover)
+
+    aruco_saver_caller(True, [13])
+    time.sleep(3)
+    aruco_saver_caller(False, [])
 
     #go back to previous state
     arm.go_to_joint_state(yaw_right)
@@ -107,16 +114,7 @@ def scan_centre():
     
     aruco_saver_caller(False, [])
 
-def main():
-    detect_enable(False)
-    arm.go_home()
-    # gripper.open()
-    # time.sleep(6)   # to make sure gripper opens before next moves
-    scan_left()
-    scan_right()
-    # scan_centre()
-    
-
+def submit():
     # Get the aruco positions
     tags = rospy.wait_for_message('/project_altair/aruco_poses', AltairAruco, 20)
     # aruco_memory = readFile()
@@ -155,7 +153,19 @@ def main():
 
     except rospy.ServiceException as e:
         print(f"Service call failed: {e}")
+
+def main():
+    detect_enable(False)
+
+    arm.go_home()
+    gripper.open()
+    time.sleep(6)   # to make sure gripper opens before next moves
     
+    scan_left()
+    scan_right()
+    scan_centre()
+    
+    submit()
 if __name__ == '__main__':
     arm.go_home()
 
