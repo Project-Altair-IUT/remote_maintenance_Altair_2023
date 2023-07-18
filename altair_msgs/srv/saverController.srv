@@ -1,5 +1,4 @@
+bool command
 uint16[] markers_to_find
-bool success
 ---
 bool success
-uint16[] found_markers

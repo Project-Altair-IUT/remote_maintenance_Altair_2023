@@ -47,13 +47,23 @@ yaw_right.append(radians(-90))
 
 ## to look at inspection box area
 inspection_box_area = geometry_msgs.msg.Pose()
-inspection_box_area.position.x = 0.270782116587325
-inspection_box_area.position.y = -0.16284394837067445
-inspection_box_area.position.z = 0.242588179635982
-inspection_box_area.orientation.x = 0.38856184836603463
-inspection_box_area.orientation.y = 0.7319442460502426
-inspection_box_area.orientation.z = -0.1942904145466983
-inspection_box_area.orientation.w = 0.5249081305176977
+inspection_box_area.position.x = 0.24807737376585776
+inspection_box_area.position.y = -0.20104866798487891
+inspection_box_area.position.z = 0.24797795913858736
+inspection_box_area.orientation.x = 0.34741413088099216
+inspection_box_area.orientation.y = 0.7047604986268203
+inspection_box_area.orientation.z = -0.27260072809419333
+inspection_box_area.orientation.w = 0.5552521087596123
+
+## to look at inspection panel cover
+inspection_panel_cover = geometry_msgs.msg.Pose()
+inspection_panel_cover.position.x = 0.294911746470652
+inspection_panel_cover.position.y = -0.20711669365835217
+inspection_panel_cover.position.z = 0.3256490954478124
+inspection_panel_cover.orientation.x = 0.294824287633354
+inspection_panel_cover.orientation.y = 0.8423609818663809
+inspection_panel_cover.orientation.z = -0.13854445825260434
+inspection_panel_cover.orientation.w = 0.4293157913914703
 
 ## to look at cover storage area
 cover_placement_area = geometry_msgs.msg.Pose()

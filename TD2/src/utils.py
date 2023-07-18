@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 
+import pickle
 import rospy
 import time
 import geometry_msgs.msg
 from math import pi, tau, dist, fabs, cos
 from moveit_commander.conversions import pose_to_list
 from std_msgs.msg import String
+from std_srvs.srv import SetBool
 
+from altair_msgs.srv import ArucoService, ArucoServiceResponse, saverController
 
 def all_close(goal, actual, tolerance):
     """
@@ -75,5 +78,47 @@ class Aruco_Marker():
         print(f'ID: {self.id}')
         print(self.pose)
 
+
+def writeFile(data):
+    try:
+        with open('marker_data.pkl', 'wb') as fp:
+            pickle.dump(data, fp)
+        print('aruco poses saved to file')
+        print(data)
+
+    except Exception as f:
+        print(f)
+    
+def readFile():
+    try:
+        with open('marker_data.pkl', 'rb') as fp:
+            data = pickle.load(fp)
+        print('aruco poses read from file')
+        return data
+    except Exception as f:
+        print(f)
+        return dict()
+
+def aruco_saver_caller(command, markers):
+    rospy.wait_for_service('saverControllerService')
+    try:
+        _saverControllerProxy = rospy.ServiceProxy('saverControllerService', saverController)
+        request_msg = saverController()
+        request_msg.command = command
+        request_msg.markers_to_find = markers
+        response = _saverControllerProxy(command, markers)
+
+        return response
+    except rospy.ServiceException as e:
+        print("Service call failed: %s"%e)
+
+def detect_enable(command):
+    rospy.wait_for_service('enable_detections')
+    try:
+        enable_detections = rospy.ServiceProxy('enable_detections', SetBool)
+        response = enable_detections(command)
+        return response.message
+    except rospy.ServiceException as e:
+        print("Service call failed: %s"%e)
         
 
