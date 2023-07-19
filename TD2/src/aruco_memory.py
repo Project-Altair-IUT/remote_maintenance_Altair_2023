@@ -72,8 +72,7 @@ def main():
                 msg.results.append(val.pose)
             pub.publish(msg)
         except Exception as e:
-            pass
-            # print(e)
+            print(e)
 
         rate.sleep()            
         

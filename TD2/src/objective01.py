@@ -93,9 +93,9 @@ def scan_right():
     #return to home position
     arm.go_home()
 
-def scan_centre():
+def scan_centre(arm):
     arm.go_to_joint_state(top_left_center_joint_goal)
-    aruco_saver_caller(True, [i for i in range (1,10)])
+    # aruco_saver_caller(True, [i for i in range (1,10)])
     # Do sweeps
     for row in range(4):
         # Go left/right

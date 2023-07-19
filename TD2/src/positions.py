@@ -8,11 +8,6 @@
 # Python 2/3 compatibility imports
 from __future__ import print_function
 
-import sys
-import copy
-import rospy
-import moveit_commander
-import moveit_msgs.msg
 import geometry_msgs.msg
 from math import pi, tau, dist, fabs, cos, radians
 
@@ -116,15 +111,23 @@ left_board_joint.append(radians(-90))
 
 
 
-## top-left corner of center board
-top_left_center = geometry_msgs.msg.Pose()
-top_left_center.position.x = 0.2814968119003112
-top_left_center.position.y = 0.11257212723531237
-top_left_center.position.z = 0.4887584644697226
-top_left_center.orientation.x = -7.721473549281385e-05
-top_left_center.orientation.y = 0.7057183659811934
-top_left_center.orientation.z = 0.0020666048089374714
-top_left_center.orientation.w = 0.7084894572957896
+## center of the switch board
+switch_panel_center = geometry_msgs.msg.Pose()
+switch_panel_center.position.x = 0.4736415714452577 - (12.3/100)
+switch_panel_center.position.y = 0.00035292609177118 
+switch_panel_center.position.z = 0.40547853586886806 - (5.5/100)
+switch_panel_center.orientation.x = -7.721473549281385e-05
+switch_panel_center.orientation.y = 0.7057183659811934
+switch_panel_center.orientation.z = 0.0020666048089374714
+switch_panel_center.orientation.w = 0.7084894572957896
+
+switch_panel_center_joint = [0 for _ in range(6)]
+switch_panel_center_joint[0] = radians(-49)
+switch_panel_center_joint[1] = radians(-116)
+switch_panel_center_joint[2] = radians(99)
+switch_panel_center_joint[3] = radians(17)
+switch_panel_center_joint[4] = radians(40)
+switch_panel_center_joint[5] = radians(-90)
 
 top_left_center_joint_goal = [0 for _ in range(6)]
 top_left_center_joint_goal[0] = 0

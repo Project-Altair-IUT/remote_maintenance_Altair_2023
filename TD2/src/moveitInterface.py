@@ -239,48 +239,36 @@ class MoveGroupInterface(object):
         ## END_SUB_TUTORIAL 
 
     def press_switch(self, marker):
-        self.go_home()
-
-        print("Calculated Switch", marker.id, "position")
-        print(marker.x - 2.0 /100.0, marker.y, marker.z - 0.065)
-        #hover_over switch
         pose_goal = geometry_msgs.msg.Pose()
+
         pose_goal.orientation.x = 0
         pose_goal.orientation.y = 0.7071068
         pose_goal.orientation.z = 0
         pose_goal.orientation.w = 0.7071068
-        pose_goal.position.x = marker.x - 15.0/100.0
-        pose_goal.position.y = marker.y
-        pose_goal.position.z = marker.z - 0.055 #5.5 cm
+
+        wait_time = 1.0
+
+        dx1 = 12.1 / 100    #the lateral distance to keep from a button when it's openn
+        dx2 = 11.5 / 100    #considering 6mm travel for the switch
+        dz = 5.5 / 100      #the center of the button is 5.5cm below the center of aruco
+        print("Calculated Switch", marker.id, "position")
+        print(marker.pose.translation.x - 2.3 /100.0, marker.pose.translation.y, marker.pose.translation.z - dz)
+
+        #hover_over switch        
+        pose_goal.position.x = marker.pose.translation.x - dx1
+        pose_goal.position.y = marker.pose.translation.y
+        pose_goal.position.z = marker.pose.translation.z - dz
         self.go_to_pose_goal(pose_goal)
 
-        print("Hovering over switch", marker.id, "5 seconds before pressing")
-        time.sleep(5)
-        print("pressing switch", marker.id , "in 5 seconds")
+        print(f"Hovering over switch {marker.id}, {wait_time} seconds before pressing")
+        time.sleep(wait_time)
 
-        # #press switch
-        # pose_goal = geometry_msgs.msg.Pose()
-        # pose_goal.orientation.x = 0
-        # pose_goal.orientation.y = 0.7071068
-        # pose_goal.orientation.z = 0
-        # pose_goal.orientation.w = 0.7071068
-        # pose_goal.position.x = marker.x - 5.0 /100.0
-        # pose_goal.position.y = marker.y
-        # pose_goal.position.z = marker.z - 0.065 #6.5 cm
-        # self.go_to_pose_goal(pose_goal)
-
-        # #coming back
-        # pose_goal = geometry_msgs.msg.Pose()
-        # pose_goal.orientation.x = 0
-        # pose_goal.orientation.y = 0.7071068
-        # pose_goal.orientation.z = 0
-        # pose_goal.orientation.w = 0.7071068
-        # pose_goal.position.x = marker.x - 10.0/100.0
-        # pose_goal.position.y = marker.y
-        # pose_goal.position.z = marker.z - 0.065 #6.5 cm
-        # self.go_to_pose_goal(pose_goal)
-
-        #retract arm
-        print("reseting to center position")
-        self.go_home()  
+        #press switch
+        pose_goal.position.x = marker.pose.translation.x - dx2
+        self.go_to_pose_goal(pose_goal)
+        print(f"Switch {marker.id} pressed, performing retraction")
+        
+        #retraction
+        pose_goal.position.x = marker.pose.translation.x - dx1
+        self.go_to_pose_goal(pose_goal)
 

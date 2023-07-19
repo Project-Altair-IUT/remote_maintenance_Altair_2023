@@ -40,6 +40,10 @@ def all_close(goal, actual, tolerance):
 
     return True
 
+
+#----------------------------------------------------------------------------------------------------#
+
+
 class Gripper(object):
     def __init__(self):
         # super(Gripper, self).__init__()    
@@ -75,6 +79,10 @@ class Gripper(object):
     def open(self):
         self.actuate("open")
 
+
+#----------------------------------------------------------------------------------------------------#
+
+
 class Aruco_Marker():
     def __init__(self, id = 0):
         self.id = id
@@ -85,6 +93,9 @@ class Aruco_Marker():
     def print_info(self):
         print(f'ID: {self.id}')
         print(self.pose)
+
+
+#----------------------------------------------------------------------------------------------------#
 
 
 def writeFile(data):
@@ -107,6 +118,10 @@ def readFile():
         print(f)
         return dict()
 
+
+#----------------------------------------------------------------------------------------------------#
+
+
 def aruco_saver_caller(command, markers):
     rospy.wait_for_service('saverControllerService')
     try:
@@ -119,6 +134,10 @@ def aruco_saver_caller(command, markers):
         return response
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
+
+
+#----------------------------------------------------------------------------------------------------#
+
 
 def detect_enable(command):
     rospy.wait_for_service('enable_detections')
