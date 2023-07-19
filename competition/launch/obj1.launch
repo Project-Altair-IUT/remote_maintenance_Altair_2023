@@ -1,0 +1,5 @@
+<launch>
+    <include file="$(find competition)/launch/detect_aruco.launch" />
+    <node pkg="competition" type="aruco_memory.py" name="TD2_aruco_memory" output="screen"></node>
+    <node pkg="competition" type="objective01.py" name="TD2_aruco_objective01" output="screen"></node>
+</launch>

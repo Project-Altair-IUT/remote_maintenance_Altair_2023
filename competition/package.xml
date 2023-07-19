@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>TD2</name>
+  <name>competition</name>
   <version>0.0.0</version>
-  <description>The TD2 package</description>
+  <description>The competition package, erc remote  Project Altair</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
