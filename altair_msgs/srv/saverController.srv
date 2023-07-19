@@ -1,0 +1,4 @@
+bool command
+uint16[] markers_to_find
+---
+bool success

@@ -8,11 +8,6 @@
 # Python 2/3 compatibility imports
 from __future__ import print_function
 
-import sys
-import copy
-import rospy
-import moveit_commander
-import moveit_msgs.msg
 import geometry_msgs.msg
 from math import pi, tau, dist, fabs, cos, radians
 
@@ -47,13 +42,23 @@ yaw_right.append(radians(-90))
 
 ## to look at inspection box area
 inspection_box_area = geometry_msgs.msg.Pose()
-inspection_box_area.position.x = 0.270782116587325
-inspection_box_area.position.y = -0.16284394837067445
-inspection_box_area.position.z = 0.242588179635982
-inspection_box_area.orientation.x = 0.38856184836603463
-inspection_box_area.orientation.y = 0.7319442460502426
-inspection_box_area.orientation.z = -0.1942904145466983
-inspection_box_area.orientation.w = 0.5249081305176977
+inspection_box_area.position.x = 0.24807737376585776
+inspection_box_area.position.y = -0.20104866798487891
+inspection_box_area.position.z = 0.24797795913858736
+inspection_box_area.orientation.x = 0.34741413088099216
+inspection_box_area.orientation.y = 0.7047604986268203
+inspection_box_area.orientation.z = -0.27260072809419333
+inspection_box_area.orientation.w = 0.5552521087596123
+
+## to look at inspection panel cover
+inspection_panel_cover = geometry_msgs.msg.Pose()
+inspection_panel_cover.position.x = 0.294911746470652
+inspection_panel_cover.position.y = -0.20711669365835217
+inspection_panel_cover.position.z = 0.3256490954478124
+inspection_panel_cover.orientation.x = 0.294824287633354
+inspection_panel_cover.orientation.y = 0.8423609818663809
+inspection_panel_cover.orientation.z = -0.13854445825260434
+inspection_panel_cover.orientation.w = 0.4293157913914703
 
 ## to look at cover storage area
 cover_placement_area = geometry_msgs.msg.Pose()
@@ -106,15 +111,23 @@ left_board_joint.append(radians(-90))
 
 
 
-## top-left corner of center board
-top_left_center = geometry_msgs.msg.Pose()
-top_left_center.position.x = 0.2814968119003112
-top_left_center.position.y = 0.11257212723531237
-top_left_center.position.z = 0.4887584644697226
-top_left_center.orientation.x = -7.721473549281385e-05
-top_left_center.orientation.y = 0.7057183659811934
-top_left_center.orientation.z = 0.0020666048089374714
-top_left_center.orientation.w = 0.7084894572957896
+## center of the switch board
+switch_panel_center = geometry_msgs.msg.Pose()
+switch_panel_center.position.x = 0.4736415714452577 - (12.3/100)
+switch_panel_center.position.y = 0.00035292609177118 
+switch_panel_center.position.z = 0.40547853586886806 - (5.5/100)
+switch_panel_center.orientation.x = -7.721473549281385e-05
+switch_panel_center.orientation.y = 0.7057183659811934
+switch_panel_center.orientation.z = 0.0020666048089374714
+switch_panel_center.orientation.w = 0.7084894572957896
+
+switch_panel_center_joint = [0 for _ in range(6)]
+switch_panel_center_joint[0] = radians(-49)
+switch_panel_center_joint[1] = radians(-116)
+switch_panel_center_joint[2] = radians(99)
+switch_panel_center_joint[3] = radians(17)
+switch_panel_center_joint[4] = radians(40)
+switch_panel_center_joint[5] = radians(-90)
 
 top_left_center_joint_goal = [0 for _ in range(6)]
 top_left_center_joint_goal[0] = 0
@@ -123,3 +136,13 @@ top_left_center_joint_goal[2] = radians(39)
 top_left_center_joint_goal[3] = radians(49)
 top_left_center_joint_goal[4] = radians(90)
 top_left_center_joint_goal[5] = radians(-90)
+
+# center pose of switch board, optimal for swich press
+switch_center_pose = geometry_msgs.msg.Pose()
+switch_center_pose.position.x = 0.3242394783080311
+switch_center_pose.position.y = 0
+switch_center_pose.position.z = 0.37312493268311087
+switch_center_pose.orientation.x = 0
+switch_center_pose.orientation.y = 0.7070950753755282
+switch_center_pose.orientation.z = 0
+switch_center_pose.orientation.w = 0.7070950753755282

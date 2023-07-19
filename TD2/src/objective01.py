@@ -16,10 +16,10 @@ from erc_aruco_msg.srv import ErcAruco, ErcArucoRequest, ErcArucoResponse
 
 from positions import home_joint_goal, top_left_center_joint_goal, \
                     yaw_left, imu_area, left_board_joint, \
-                    yaw_right, inspection_box_area, cover_placement_area
+                    yaw_right, inspection_box_area,inspection_panel_cover, cover_placement_area
 
 from moveitInterface import MoveGroupInterface
-from utils import Gripper
+from utils import Gripper, readFile, aruco_saver_caller, detect_enable
 
 gripper = Gripper()
 
@@ -27,7 +27,7 @@ arm = MoveGroupInterface()
 
 def scan_left():
     #ensure we are at home
-    arm.go_home()
+    # arm.go_home()
 
     #shoulder pan joint yaw left
     arm.go_to_joint_state(yaw_left)
@@ -35,11 +35,19 @@ def scan_left():
     #look at imu area
     arm.go_to_pose_goal(imu_area)
 
+    aruco_saver_caller(True, [10])
+    time.sleep(3)
+    aruco_saver_caller(False, [])
+    
     #go back to previous state
     arm.go_to_joint_state(yaw_left)
 
     #look at left panel
     arm.go_to_joint_state(left_board_joint)
+    aruco_saver_caller(True, [11])
+    time.sleep(3)
+    aruco_saver_caller(False, [])
+
 
     #go back to previous state
     arm.go_to_joint_state(yaw_left)
@@ -54,8 +62,13 @@ def scan_right():
     #shoulder pan joint yaw right
     arm.go_to_joint_state(yaw_right)
 
-    #look at cover placement area
+
+    #look at planel cover storage area
     arm.go_to_pose_goal(cover_placement_area)
+
+    aruco_saver_caller(True, [14])
+    time.sleep(3)
+    aruco_saver_caller(False, [])
 
     #go back to previous state
     arm.go_to_joint_state(yaw_right)
@@ -63,14 +76,26 @@ def scan_right():
     #look at inspection panel area
     arm.go_to_pose_goal(inspection_box_area)
 
+    aruco_saver_caller(True, [12])
+    time.sleep(3)
+    aruco_saver_caller(False, [])
+
+    #look at inspection panel cover
+    arm.go_to_pose_goal(inspection_panel_cover)
+
+    aruco_saver_caller(True, [13])
+    time.sleep(3)
+    aruco_saver_caller(False, [])
+
     #go back to previous state
     arm.go_to_joint_state(yaw_right)
 
     #return to home position
     arm.go_home()
 
-def scan_centre():
+def scan_centre(arm):
     arm.go_to_joint_state(top_left_center_joint_goal)
+    # aruco_saver_caller(True, [i for i in range (1,10)])
     # Do sweeps
     for row in range(4):
         # Go left/right
@@ -86,20 +111,13 @@ def scan_centre():
         # Go down
         plan, fraction = arm.plan_cartesian_path((0, 0, -0.12))
         arm.execute_plan(plan)
-
-
-
-def main():
-    arm.go_home()
-    gripper.open()
-    time.sleep(6)   # to make sure gripper opens before next moves
-    scan_left()
-    scan_right()
-    scan_centre()
     
+    aruco_saver_caller(False, [])
 
+def submit():
     # Get the aruco positions
     tags = rospy.wait_for_message('/project_altair/aruco_poses', AltairAruco, 20)
+    # aruco_memory = readFile()
     memo = dict()
     for idx, r in zip(tags.results_id, tags.results):
         memo[idx] = [
@@ -107,7 +125,8 @@ def main():
             r.translation.y,
             r.translation.z,
         ]
-
+    print('got these:')
+    print(memo)
     # Call the scorer
     rospy.wait_for_service('erc_aruco_score')
     try:
@@ -130,9 +149,23 @@ def main():
         print(service_msg)
         service_response = service_proxy(service_msg)
         print(f"Received score: {service_response.score}")
+        print(f"Corrected tags: {service_response.corrects}")
+
     except rospy.ServiceException as e:
         print(f"Service call failed: {e}")
+
+def main():
+    detect_enable(False)
+
+    arm.go_home()
+    gripper.open()
+    time.sleep(6)   # to make sure gripper opens before next moves
     
+    scan_left()
+    scan_right()
+    scan_centre()
+    
+    submit()
 if __name__ == '__main__':
     arm.go_home()
 
