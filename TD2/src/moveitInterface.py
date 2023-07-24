@@ -149,6 +149,16 @@ class MoveGroupInterface(object):
     def go_home(self):
         self.go_to_joint_state(home_joint_goal)
         
+    def linear_move_to_pose (self, pose_goal):
+        move_group = self.move_group
+
+        next_point = [pose_goal]
+
+        (plan, fraction) = move_group.compute_cartesian_path(
+            next_point, 0.01, 0.0  # next point to go linear  # eef_step
+        )  # jump_threshold
+
+        self.execute_plan(plan)
 
     def plan_cartesian_path(self, delta, scale=1):
         # Copy class variables to local variables to make the web tutorials more clear.
@@ -258,17 +268,17 @@ class MoveGroupInterface(object):
         pose_goal.position.x = marker.pose.translation.x - dx1
         pose_goal.position.y = marker.pose.translation.y
         pose_goal.position.z = marker.pose.translation.z - dz
-        self.go_to_pose_goal(pose_goal)
+        self.linear_move_to_pose(pose_goal)
 
         print(f"Hovering over switch {marker.id}, {wait_time} seconds before pressing")
         time.sleep(wait_time)
 
         #press switch
         pose_goal.position.x = marker.pose.translation.x - dx2
-        self.go_to_pose_goal(pose_goal)
+        self.linear_move_to_pose(pose_goal)
         print(f"Switch {marker.id} pressed, performing retraction")
         
         #retraction
         pose_goal.position.x = marker.pose.translation.x - dx1
-        self.go_to_pose_goal(pose_goal)
+        self.linear_move_to_pose(pose_goal)
 

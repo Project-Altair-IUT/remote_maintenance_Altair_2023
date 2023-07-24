@@ -48,7 +48,7 @@ class Gripper(object):
     def __init__(self):
         # super(Gripper, self).__init__()    
         self.gripper_pub = rospy.Publisher('gripper_command', String, queue_size=10)
-        self.sleep_time = 6
+        self.sleep_time = 8
         self.state = None
 
     def actuate(self, command):

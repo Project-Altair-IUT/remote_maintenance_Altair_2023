@@ -163,7 +163,7 @@ def main():
     
     scan_left()
     scan_right()
-    scan_centre()
+    scan_centre(arm)
     
     submit()
 if __name__ == '__main__':
