@@ -60,7 +60,7 @@ class Gripper(object):
         self.state = command
         self.gripper_pub.publish(self.state)
 
-        print(f"Waiting {self.sleep_time} seconds for completion")
+        print(f"Waiting {self.sleep_time} seconds for gripper state change")
 
         time.sleep(self.sleep_time)
 

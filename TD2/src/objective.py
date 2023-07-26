@@ -14,7 +14,7 @@ from positions import home_joint_goal, top_left_center_joint_goal, switch_panel_
                     yaw_right, inspection_box_area, cover_placement_area
 
 from moveitInterface import MoveGroupInterface
-from utils import Gripper, Aruco_Marker
+from utils import Gripper, Aruco_Marker, aruco_saver_caller
 from objective01 import scan_centre
 
 gripper = Gripper()
@@ -48,10 +48,11 @@ def get_marker_positions():
         try: 
             marker.pose = memo[idx]
             to_press_button_markers.append(marker)
-            
+            print(f'got position for marker: {marker.id}')
+            print(marker.pose)
+
         except KeyError as e:
             print(f'could not get pose for marker with id = {idx}')
-        print(f'got position for marker: {marker.id}')
 
 def press_buttons():
     for marker in to_press_button_markers:
@@ -63,7 +64,10 @@ def press_buttons():
 def main():
     arm.go_home()
 
+    aruco_saver_caller(True, to_press_button_ids)
+
     gripper.open()
+
     scan_centre(arm)
 
     arm.go_to_joint_state(switch_panel_center_joint)
