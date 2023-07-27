@@ -94,6 +94,9 @@ class Aruco_Marker():
         print(f'ID: {self.id}')
         print(self.pose)
 
+    def rapid_update(self):
+        pass
+
 
 #----------------------------------------------------------------------------------------------------#
 
@@ -148,4 +151,9 @@ def detect_enable(command):
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
         
+
+#----------------------------------------------------------------------------------------------------#
+
+
+
 

@@ -25,6 +25,8 @@ def callback(request):
     return saverControllerResponse(True)
 
 def save_transform(tfBuffer):
+    print('enabled save transform')
+    print(f'markers looking for: {markers_to_find}')
     global MEMORY
     for idx in markers_to_find:
             print(f'searching for {idx}')

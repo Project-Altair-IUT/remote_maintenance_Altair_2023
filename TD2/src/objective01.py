@@ -95,7 +95,6 @@ def scan_right():
 
 def scan_centre(arm):
     arm.go_to_joint_state(top_left_center_joint_goal)
-    # aruco_saver_caller(True, [i for i in range (1,10)])
     # Do sweeps
     for row in range(4):
         # Go left/right
@@ -112,7 +111,6 @@ def scan_centre(arm):
         plan, fraction = arm.plan_cartesian_path((0, 0, -0.12))
         arm.execute_plan(plan)
     
-    aruco_saver_caller(False, [])
 
 def submit():
     # Get the aruco positions
@@ -127,8 +125,10 @@ def submit():
         ]
     print('got these:')
     print(memo)
+
     # Call the scorer
     rospy.wait_for_service('erc_aruco_score')
+    print('waiting for scorer service')
     try:
         service_proxy = rospy.ServiceProxy('erc_aruco_score', ErcAruco)
         service_msg = ErcArucoRequest()
@@ -159,11 +159,14 @@ def main():
 
     arm.go_home()
     gripper.open()
-    time.sleep(6)   # to make sure gripper opens before next moves
+    
     
     scan_left()
     scan_right()
+
+    aruco_saver_caller(True, [i for i in range (1,10)])
     scan_centre(arm)
+    aruco_saver_caller(False, [])
     
     submit()
 if __name__ == '__main__':

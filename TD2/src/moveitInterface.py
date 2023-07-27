@@ -258,7 +258,8 @@ class MoveGroupInterface(object):
 
         wait_time = 1.0
 
-        dx1 = 12.1 / 100    #the lateral distance to keep from a button when it's openn
+        dx1 = 12.1 / 100    #the lateral distance to keep from a button when it's open
+        # dx1 = 14.0 / 100
         dx2 = 11.5 / 100    #considering 6mm travel for the switch
         dz = 5.5 / 100      #the center of the button is 5.5cm below the center of aruco
         print("Calculated Switch", marker.id, "position")
@@ -281,4 +282,3 @@ class MoveGroupInterface(object):
         #retraction
         pose_goal.position.x = marker.pose.translation.x - dx1
         self.linear_move_to_pose(pose_goal)
-
