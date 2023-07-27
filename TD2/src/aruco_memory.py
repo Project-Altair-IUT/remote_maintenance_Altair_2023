@@ -44,6 +44,8 @@ def save_transform(tfBuffer):
     writeFile(MEMORY)
 
 def main():
+    detect_enable(False)
+
     global MEMORY
     MEMORY = readFile()
 

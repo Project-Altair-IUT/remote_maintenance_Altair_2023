@@ -80,6 +80,8 @@ def main():
     time.sleep(1)
 
     press_buttons()
+
+    arm.go_home()
     
 if __name__ == '__main__':
     main()
