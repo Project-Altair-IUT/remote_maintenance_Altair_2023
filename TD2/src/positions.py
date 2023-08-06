@@ -146,3 +146,25 @@ switch_center_pose.orientation.x = 0
 switch_center_pose.orientation.y = 0.7070950753755282
 switch_center_pose.orientation.z = 0
 switch_center_pose.orientation.w = 0.7070950753755282
+
+# lid grab pose
+# position: 
+#   x: 0.3354168505827498
+#   y: -0.27399984637399205
+#   z: 0.29109765218210415
+# orientation: 
+#   x: 0.14053436466132715
+#   y: 0.7793121240844293
+#   z: -0.09184106110990675
+#   w: 0.6037283537307641
+
+## imu grab pose
+# position: 
+#   x: 0.18965763124389362
+#   y: 0.24569656382660904
+#   z: -0.04838672626286317
+# orientation: 
+#   x: 0.6730844985242864
+#   y: -0.739451011560873
+#   z: -0.011733633284878567
+#   w: 0.005637481516373863

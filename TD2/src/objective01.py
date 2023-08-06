@@ -19,11 +19,35 @@ from positions import home_joint_goal, top_left_center_joint_goal, \
                     yaw_right, inspection_box_area,inspection_panel_cover, cover_placement_area
 
 from moveitInterface import MoveGroupInterface
-from utils import Gripper, readFile, aruco_saver_caller, detect_enable
+from utils import Gripper, readFile, aruco_saver_caller, detect_enable, Aruco_Marker
 
 gripper = Gripper()
 
 arm = MoveGroupInterface()
+
+to_press_button_markers = []
+
+def get_marker_positions():
+    # Get the aruco positions
+    tags = rospy.wait_for_message('/project_altair/aruco_poses', AltairAruco, 20)
+
+    # Take the ones stated on parameter
+
+    memo = dict()
+    for idx, r in zip(tags.results_id, tags.results):
+        memo[idx] = r
+
+    for idx in range(1,10):
+        marker = Aruco_Marker(idx)
+        try: 
+            marker.pose = memo[idx]
+            to_press_button_markers.append(marker)
+            print(f'got position for marker: {marker.id}')
+            print(marker.pose)
+
+        except KeyError as e:
+            print(f'could not get pose for marker with id = {idx}')
+
 
 def scan_left():
     #ensure we are at home
@@ -93,6 +117,34 @@ def scan_right():
     #return to home position
     arm.go_home()
 
+
+def second_look():
+    print('giving a second look')
+    pose_goal = geometry_msgs.msg.Pose()
+
+    pose_goal.orientation.x = 0
+    pose_goal.orientation.y = 0.7071068
+    pose_goal.orientation.z = 0
+    pose_goal.orientation.w = 0.7071068
+    dx1 = 13.0 / 100
+    dx2 = 11.5 / 100    #considering 6mm travel for the switch
+    dz = 5.5 / 100      #the center of the button is 5.5cm below the center of aruco
+        
+    for marker in to_press_button_markers:
+        print(marker.pose)
+        pose_goal.position = marker.pose.translation
+        pose_goal.position.x = marker.pose.translation.x - dx1
+        # pose_goal.position.z = marker.pose.translation.z - dz
+
+        arm.linear_move_to_pose(pose_goal)
+        
+        aruco_saver_caller(True, [marker.id])
+        time.sleep(3)
+        aruco_saver_caller(False, [])
+        
+    
+    print('second look done')
+
 def scan_centre(arm):
     arm.go_to_joint_state(top_left_center_joint_goal)
     # Do sweeps
@@ -160,13 +212,15 @@ def main():
     arm.go_home()
     gripper.open()
     
-    
     scan_left()
     scan_right()
 
     aruco_saver_caller(True, [i for i in range (1,10)])
     scan_centre(arm)
     aruco_saver_caller(False, [])
+
+    get_marker_positions()
+    second_look()
     
     submit()
 if __name__ == '__main__':

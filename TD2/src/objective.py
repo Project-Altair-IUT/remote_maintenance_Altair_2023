@@ -62,6 +62,7 @@ def press_buttons():
         print(marker.id)
 
 def second_look():
+    print('giving a second look')
     pose_goal = geometry_msgs.msg.Pose()
 
     pose_goal.orientation.x = 0
@@ -96,7 +97,7 @@ def second_look():
             print(e)
     
     detect_enable(False)
-
+    print('second look done')
 
 def main():
     arm.go_home()
