@@ -43,11 +43,13 @@ def get_marker_positions():
     for idx, r in zip(tags.results_id, tags.results):
         memo[idx] = r
 
+    print("Here is the memo " )
+    print(memo)
     for idx in to_press_button_ids:
         marker = Aruco_Marker(idx)
         marker.pose = memo[idx]
         to_press_button_markers.append(marker)
-    # print(button_markers)
+        print(to_press_button_markers)
 
 def press_buttons():
     for marker in to_press_button_markers:
@@ -61,6 +63,8 @@ def main():
     arm.go_home()
 
     arm.go_to_joint_state(switch_panel_center_joint)
+
+    arm.show_current_pose()
     
     get_params()
     

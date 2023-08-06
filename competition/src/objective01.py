@@ -95,7 +95,7 @@ def scan_right():
 
 def scan_centre(arm):
     arm.go_to_joint_state(top_left_center_joint_goal)
-    # aruco_saver_caller(True, [i for i in range (1,10)])
+    aruco_saver_caller(True, [i for i in range (1,10)])
     # Do sweeps
     for row in range(4):
         # Go left/right
@@ -155,7 +155,7 @@ def submit():
         print(f"Service call failed: {e}")
 
 def main():
-    detect_enable(False)
+    detect_enable(True)
 
     arm.go_home()
     gripper.open()
@@ -163,7 +163,7 @@ def main():
     
     scan_left()
     scan_right()
-    scan_centre()
+    scan_centre(arm)
     
     submit()
 if __name__ == '__main__':

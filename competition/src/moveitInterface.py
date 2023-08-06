@@ -117,7 +117,14 @@ class MoveGroupInterface(object):
         current_joints = move_group.get_current_joint_values()
         return all_close(joint_goal, current_joints, 0.01)
 
+    def get_joint_states(self):
+        return self.move_group.get_current_joint_values()
+    
+    
     def go_to_pose_goal(self, pose_goal):
+        
+        print(self.robot.get_link_names("gripper"))
+        print(self.scene.get_objects())
         move_group = self.move_group
 
         ## BEGIN_SUB_TUTORIAL plan_to_pose
@@ -127,7 +134,7 @@ class MoveGroupInterface(object):
         ## We can plan a motion for this group to a desired pose for the
         ## end-effector:
         move_group.set_pose_target(pose_goal)
-
+    
         ## Now, we call the planner to compute the plan and execute it.
         # `go()` returns a boolean indicating whether the planning and execution was successful.
         success = move_group.go(wait=True)
@@ -145,6 +152,35 @@ class MoveGroupInterface(object):
         # we use the class variable rather than the copied state variable
         current_pose = self.move_group.get_current_pose().pose
         return all_close(pose_goal, current_pose, 0.01)
+    
+    def shift_pose_goal(self, axis , value):
+        move_group = self.move_group
+
+        ## BEGIN_SUB_TUTORIAL plan_to_pose
+        ##
+        ## Planning to a Pose Goal
+        ## ^^^^^^^^^^^^^^^^^^^^^^^
+        ## We can plan a motion for this group to a desired pose for the
+        ## end-effector:
+        move_group.shift_pose_target(axis , value)
+    
+        ## Now, we call the planner to compute the plan and execute it.
+        # `go()` returns a boolean indicating whether the planning and execution was successful.
+        success = move_group.go(wait=True)
+        # Calling `stop()` ensures that there is no residual movement
+        move_group.stop()
+        # It is always good to clear your targets after planning with poses.
+        move_group.clear_pose_targets()
+
+        time.sleep(1)
+
+
+        ## END_SUB_TUTORIAL
+        # For testing:
+        # Note that since this section of code will not be included in the tutorials
+        # we use the class variable rather than the copied state variable
+        current_pose = self.move_group.get_current_pose().pose
+        return True
 
     def go_home(self):
         self.go_to_joint_state(home_joint_goal)
@@ -191,6 +227,10 @@ class MoveGroupInterface(object):
 
     def show_current_pose(self):
         print(self.move_group.get_current_pose().pose)
+
+
+    def get_current_pose(self):
+        return self.move_group.get_current_pose().pose
 
     def display_trajectory(self, plan):
         # Copy class variables to local variables to make the web tutorials more clear.
