@@ -147,6 +147,16 @@ switch_center_pose.orientation.y = 0.7070950753755282
 switch_center_pose.orientation.z = 0
 switch_center_pose.orientation.w = 0.7070950753755282
 
+#lid holding position
+lid_hold_pos = geometry_msgs.msg.Pose()
+lid_hold_pos.position.x = 0.3470540509255145
+lid_hold_pos.position.y = -0.2805681637938778
+lid_hold_pos.position.z = 0.2708827588802122
+lid_hold_pos.orientation.x = 0.1010246540204724
+lid_hold_pos.orientation.y = 0.7145014636633752
+lid_hold_pos.orientation.z = -0.11242329809043651
+lid_hold_pos.orientation.w = 0.683112494212635
+
 # lid grab pose
 # position: 
 #   x: 0.3354168505827498
