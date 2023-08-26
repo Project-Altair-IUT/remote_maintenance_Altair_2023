@@ -8,5 +8,9 @@
         "/home/azfarus/Downloads/gazebo_ros_pkgs-noetic-devel/gazebo_plugins/build/devel/lib/python3/dist-packages",
         "/home/azfarus/catkin_ws/devel/lib/python3/dist-packages",
         "/opt/ros/noetic/lib/python3/dist-packages"
-    ]
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "python.formatting.provider": "none"
 }

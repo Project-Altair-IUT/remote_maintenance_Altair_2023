@@ -227,7 +227,7 @@ class MoveGroupInterface(object):
 
     def show_current_pose(self):
         print(self.move_group.get_current_pose().pose)
-
+    
 
     def get_current_pose(self):
         return self.move_group.get_current_pose().pose
