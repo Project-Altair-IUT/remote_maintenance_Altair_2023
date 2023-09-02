@@ -277,6 +277,17 @@ class MoveGroupInterface(object):
         ## **Note:** The robot's current joint state must be within some tolerance of the
         ## first waypoint in the `RobotTrajectory`_ or ``execute()`` will fail
         ## END_SUB_TUTORIAL 
+    
+    def linear_move_to_pose (self, pose_goal):
+        move_group = self.move_group
+
+        next_point = [pose_goal]
+
+        (plan, fraction) = move_group.compute_cartesian_path(
+            next_point, 0.01, 0.0  # next point to go linear  # eef_step
+        )  # jump_threshold
+
+        self.execute_plan(plan)
 
     def press_switch(self, marker):
         pose_goal = geometry_msgs.msg.Pose()
