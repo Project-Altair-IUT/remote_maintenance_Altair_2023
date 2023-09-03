@@ -1,0 +1,7 @@
+<launch>
+    <arg name="tag" default="1" />
+    <include file="$(find competition)/launch/detect_aruco.launch" />
+    <node pkg="competition" type="objective09.py" name="competition_aruco_objective02" output="screen">
+        <param name="tag" value="$(arg tag)" />
+    </node>
+</launch>

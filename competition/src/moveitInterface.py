@@ -336,5 +336,5 @@ class MoveGroupInterface(object):
         
         #retraction
         pose_goal.position.x = marker.pose.translation.x - dx1*t
-        self.go_to_pose_goal(pose_goal)
+        self.linear_move_to_pose(pose_goal)
 
