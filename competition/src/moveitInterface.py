@@ -23,7 +23,7 @@ from moveit_commander.conversions import pose_to_list
 ## END_SUB_TUTORIAL
 
 #import positions from positions file
-from positions import home_joint_goal, yaw_left, left_board, imu_area
+from positions import home_joint_goal, yaw_left, left_board, imu_area, home_pose
 from utils import all_close
 
 
@@ -54,7 +54,7 @@ class MoveGroupInterface(object):
         ## This interface can be used to plan and execute motions:
         self.group_name = "manipulator"
         self.move_group = moveit_commander.MoveGroupCommander(self.group_name)
-        self.move_group.set_max_velocity_scaling_factor(0.5)    
+        self.move_group.set_max_velocity_scaling_factor(0.4)    
         self.move_group.set_planner_id("RRTConnectkConfigDefault")
         self.move_group.set_planning_time(30)
 
