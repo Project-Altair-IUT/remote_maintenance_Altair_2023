@@ -309,7 +309,7 @@ class MoveGroupInterface(object):
         pose_goal.position.x = marker.pose.translation.x - dx1
         pose_goal.position.y = marker.pose.translation.y
         pose_goal.position.z = marker.pose.translation.z - dz
-        self.go_to_pose_goal(pose_goal)
+        self.linear_move_to_pose(pose_goal)
 
         print(f"Hovering over switch {marker.id}, {wait_time} seconds before pressing")
         time.sleep(wait_time)

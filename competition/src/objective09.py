@@ -26,7 +26,7 @@ to_press_button_id = None
 to_press_button_marker = None
 
 def get_params():
-    parameter = rospy.get_param('~tag', 1)
+    parameter = rospy.get_param('~tag')
     global to_press_button_id 
     to_press_button_id = parameter
     
