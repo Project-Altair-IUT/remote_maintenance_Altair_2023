@@ -303,6 +303,14 @@ class MoveGroupInterface(object):
         print(f"Hovering over switch {marker.id}, {wait_time} seconds before pressing")
         time.sleep(wait_time)
 
+        button_topic = "/button{marker.id}"
+        button_status = False
+        while(button_status == False):
+
+
+            button_status = rospy.wait_for_message(button_topic, bool, timeout=2)
+              
+
         #press switch
         pose_goal.position.x = marker.pose.translation.x - dx2
         self.go_to_pose_goal(pose_goal)

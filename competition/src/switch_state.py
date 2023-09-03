@@ -28,7 +28,11 @@ arm = MoveGroupInterface()
 memo = dict()
 
 
-switch_state_publisher = rospy.Publisher("switch_state" , Bool , queue_size=10)
+switch_state_publisher1 = rospy.Publisher("/button1" , Bool , queue_size=10)
+switch_state_publisher2 = rospy.Publisher("/button2" , Bool , queue_size=10)
+switch_state_publisher3 = rospy.Publisher("/button3" , Bool , queue_size=10)
+switch_state_publisher4 = rospy.Publisher("/button4" , Bool , queue_size=10)
+
 rate = rospy.Rate(10)
 def get_marker_positions():
     # Get the aruco positions
@@ -60,9 +64,10 @@ def check_marker(marker_id):
 def main():
     get_marker_positions()
     while True:
-
-        
-        switch_state_publisher.publish( check_marker(1) or check_marker(2) or check_marker(3) or check_marker(4)  )
+        switch_state_publisher1.publish(check_marker(1))
+        switch_state_publisher2.publish(check_marker(2))
+        switch_state_publisher3.publish(check_marker(3))
+        switch_state_publisher4.publish(check_marker(4))
         rate.sleep()
         
 
