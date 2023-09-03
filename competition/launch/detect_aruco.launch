@@ -10,4 +10,5 @@
         <param name="vis_msgs" value="False"/>
         <param name="verbose" value="False"/>
     </node>
+    <node pkg="competition" type="aruco_memory.py" name="competition_aruco_memory" output="screen"></node>
 </launch>

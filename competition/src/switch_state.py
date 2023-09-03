@@ -36,22 +36,22 @@ switch_state_publisher4 = rospy.Publisher("/button4" , Bool , queue_size=10)
 rate = rospy.Rate(10)
 def get_marker_positions():
     # Get the aruco positions
+    global memo
     try: 
         tags = rospy.wait_for_message('/project_altair/aruco_poses', AltairAruco, timeout=200)
 
         for idx, r in zip(tags.results_id, tags.results):
-            memo[idx] = [
-                r.translation.x,
-                r.translation.y,
-                r.translation.z,
-            ]            
+            memo[idx] = r
         print(memo)
     except rospy.ROSException as e:
         rospy.logwarn("Timeout while waiting for message: {}".format(e))
-        memo = (0,0,0) * 10
+        memo = None
         print(memo)
 
 def check_marker(marker_id):
+    global memo
+    if memo == None:
+        return False
     valueX = abs(arm.get_current_pose().position.x - memo[marker_id].translation.x) 
     valueY = abs(arm.get_current_pose().position.y - memo[marker_id].translation.y)
     valueZ = arm.get_current_pose().position.z - memo[marker_id].translation.z  

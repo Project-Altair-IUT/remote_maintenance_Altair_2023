@@ -21,11 +21,13 @@ from positions import home_joint_goal, top_left_center_joint_goal, \
 from moveitInterface import MoveGroupInterface
 from utils import Gripper, readFile, aruco_saver_caller, detect_enable, Aruco_Marker
 
+altair_sim = False
+
 gripper = Gripper()
 
 arm = MoveGroupInterface()
 
-to_press_button_markers = []
+scanned_markers = []
 
 def get_marker_positions():
     # Get the aruco positions
@@ -41,7 +43,7 @@ def get_marker_positions():
         marker = Aruco_Marker(idx)
         try: 
             marker.pose = memo[idx]
-            to_press_button_markers.append(marker)
+            scanned_markers.append(marker)
             print(f'got position for marker: {marker.id}')
             print(marker.pose)
 
@@ -130,7 +132,7 @@ def second_look():
     dx2 = 11.5 / 100    #considering 6mm travel for the switch
     dz = 5.5 / 100      #the center of the button is 5.5cm below the center of aruco
         
-    for marker in to_press_button_markers:
+    for marker in scanned_markers:
         print(marker.pose)
         pose_goal.position = marker.pose.translation
         pose_goal.position.x = marker.pose.translation.x - dx1
@@ -201,7 +203,8 @@ def submit():
         print(service_msg)
         service_response = service_proxy(service_msg)
         print(f"Received score: {service_response.score}")
-        print(f"Corrected tags: {service_response.corrects}")
+        if altair_sim:
+            print(f"Corrected tags: {service_response.corrects}")
 
     except rospy.ServiceException as e:
         print(f"Service call failed: {e}")

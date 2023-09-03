@@ -113,9 +113,7 @@ def main():
 
     get_marker_positions()
 
-    second_look()
-
-    arm.go_to_joint_state(switch_panel_center_joint)
+    arm.linear_move_to_pose(switch_panel_center)
     
     gripper.close()
 

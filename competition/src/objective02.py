@@ -28,7 +28,7 @@ to_press_button_markers = []
 def get_params():
     parameters = rospy.get_param('~tags', "0,0,0,0")
     for char in parameters:
-        if char != ",":
+        if char != "," and char != " ":
             to_press_button_ids.append(int(char))
     
     print(to_press_button_ids)
@@ -51,7 +51,7 @@ def get_marker_positions():
 
 def press_buttons():
     for marker in to_press_button_markers:
-        arm.go_to_joint_state(switch_panel_center_joint)
+        arm.linear_move_to_pose(switch_panel_center)
         arm.press_switch(marker)
         print(marker.id)
 
@@ -60,7 +60,7 @@ def press_buttons():
 def main():
     arm.go_home()
 
-    arm.go_to_joint_state(switch_panel_center_joint)
+    arm.linear_move_to_pose(switch_panel_center)
     
     get_params()
     

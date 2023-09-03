@@ -17,7 +17,7 @@ import moveit_msgs.msg
 import geometry_msgs.msg
 from math import pi, tau, dist, fabs, cos, radians
 
-from std_msgs.msg import String
+from std_msgs.msg import String, Bool
 from moveit_commander.conversions import pose_to_list
 
 ## END_SUB_TUTORIAL
@@ -314,19 +314,21 @@ class MoveGroupInterface(object):
         print(f"Hovering over switch {marker.id}, {wait_time} seconds before pressing")
         time.sleep(wait_time)
 
-        button_topic = "/button{marker.id}"
+        button_topic = f"/button{marker.id}"
         button_status = False
         t = 0
 
         #press switch
         while(button_status == False):
-            print(f'try: {++t}')
+            t = t+1
+            print(f'try: {t}')
             pose_goal.position.x = marker.pose.translation.x - dx2
             self.linear_move_to_pose(pose_goal)
             try: 
-                button_status = rospy.wait_for_message(button_topic, bool, timeout=2)
+                button_status = rospy.wait_for_message(button_topic, Bool, timeout=3)
+                print(f'from {button_topic} topic: {button_status}')
             except rospy.ROSException as e:
-                print(e)
+                print(e, button_topic)
                 break
 
 
