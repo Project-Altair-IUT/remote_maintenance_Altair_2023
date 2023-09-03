@@ -299,7 +299,7 @@ class MoveGroupInterface(object):
 
         wait_time = 1.0
 
-        dx1 = 12.1 / 100    #the lateral distance to keep from a button when it's openn
+        dx1 = 12.1 / 100    #the lateral distance to keep from a button's root (also aruco's root) when it's openn
         dx2 = 11.5 / 100    #considering 6mm travel for the switch
         dz = 5.5 / 100      #the center of the button is 5.5cm below the center of aruco
         print("Calculated Switch", marker.id, "position")
@@ -314,12 +314,25 @@ class MoveGroupInterface(object):
         print(f"Hovering over switch {marker.id}, {wait_time} seconds before pressing")
         time.sleep(wait_time)
 
+        button_topic = "/button{marker.id}"
+        button_status = False
+        t = 0
+
         #press switch
-        pose_goal.position.x = marker.pose.translation.x - dx2
-        self.go_to_pose_goal(pose_goal)
+        while(button_status == False):
+            print(f'try: {++t}')
+            pose_goal.position.x = marker.pose.translation.x - dx2
+            self.linear_move_to_pose(pose_goal)
+            try: 
+                button_status = rospy.wait_for_message(button_topic, bool, timeout=2)
+            except rospy.ROSException as e:
+                print(e)
+                break
+
+
         print(f"Switch {marker.id} pressed, performing retraction")
         
         #retraction
-        pose_goal.position.x = marker.pose.translation.x - dx1
+        pose_goal.position.x = marker.pose.translation.x - dx1*t
         self.go_to_pose_goal(pose_goal)
 
