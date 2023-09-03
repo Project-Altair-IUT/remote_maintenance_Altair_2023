@@ -227,7 +227,7 @@ class MoveGroupInterface(object):
 
     def show_current_pose(self):
         print(self.move_group.get_current_pose().pose)
-    
+
 
     def get_current_pose(self):
         return self.move_group.get_current_pose().pose
@@ -277,6 +277,17 @@ class MoveGroupInterface(object):
         ## **Note:** The robot's current joint state must be within some tolerance of the
         ## first waypoint in the `RobotTrajectory`_ or ``execute()`` will fail
         ## END_SUB_TUTORIAL 
+    
+    def linear_move_to_pose (self, pose_goal):
+        move_group = self.move_group
+
+        next_point = [pose_goal]
+
+        (plan, fraction) = move_group.compute_cartesian_path(
+            next_point, 0.01, 0.0  # next point to go linear  # eef_step
+        )  # jump_threshold
+
+        self.execute_plan(plan)
 
     def press_switch(self, marker):
         pose_goal = geometry_msgs.msg.Pose()
@@ -288,7 +299,7 @@ class MoveGroupInterface(object):
 
         wait_time = 1.0
 
-        dx1 = 12.1 / 100    #the lateral distance to keep from a button when it's openn
+        dx1 = 12.1 / 100    #the lateral distance to keep from a button's root (also aruco's root) when it's openn
         dx2 = 11.5 / 100    #considering 6mm travel for the switch
         dz = 5.5 / 100      #the center of the button is 5.5cm below the center of aruco
         print("Calculated Switch", marker.id, "position")
@@ -305,15 +316,17 @@ class MoveGroupInterface(object):
 
         button_topic = "/button{marker.id}"
         button_status = False
-        while(button_status == False):
-
-
-            button_status = rospy.wait_for_message(button_topic, bool, timeout=2)
-              
+        t = 0
 
         #press switch
-        pose_goal.position.x = marker.pose.translation.x - dx2
-        self.go_to_pose_goal(pose_goal)
+        while(button_status == False):
+            print(f'try: {++t}')
+            pose_goal.position.x = marker.pose.translation.x - dx2
+            self.linear_move_to_pose(pose_goal)
+
+            button_status = rospy.wait_for_message(button_topic, bool, timeout=2)
+            
+
         print(f"Switch {marker.id} pressed, performing retraction")
         
         #retraction
